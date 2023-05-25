@@ -1,0 +1,4 @@
+repository "battleGround@hahahaha@cloud"
+  path "/"
+    br "/main"
+    co "/main"
