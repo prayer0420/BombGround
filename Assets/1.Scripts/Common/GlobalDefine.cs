@@ -16,6 +16,13 @@ public enum SoundPlayType
     UI,
 }
 
+public enum WeaponType
+{
+    NONE,
+    SHORT,
+    LONG,
+}
+
 #region //Tool Defines 
 public enum EventStartType { INTERACT, AUTOSTART, TRIGGER_ENTER, TRIGGER_EXIT, NONE, KEY_PRESS, DROP };
 public enum AIConditionNeeded { ALL, ONE };
