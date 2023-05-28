@@ -1,4 +1,5 @@
 ﻿using NPOI.HPSF;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -550,5 +551,13 @@ public class SoundManager : SingletonMonobehaviour<SoundManager>
         StopAllCoroutines();
     }
 
+    /// <summary>
+    /// enemy의 클래스에 따라 사격 사운드 교체
+    /// </summary>
+    public void PlayShotSound(string ClassID, Vector3 position, float volume)
+    {
+        SoundList sound = (SoundList)Enum.Parse(typeof(SoundList), ClassID.ToLower());
+        PlayOneShotEffect((int)sound, position, volume);
+    }
 
 }

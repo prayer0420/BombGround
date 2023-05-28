@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(menuName = "PulggableAI/GeneralStats")]
+[CreateAssetMenu(menuName = "PluggableAI/GeneralStats")]
 public class GeneralStats : ScriptableObject
 {
     [Header("General")]

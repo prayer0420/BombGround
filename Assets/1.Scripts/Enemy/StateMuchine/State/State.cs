@@ -7,7 +7,7 @@ using UnityEngine;
 /// </summary>
 
 
-[CreateAssetMenu(menuName = "PluggeableAI/State")]
+[CreateAssetMenu(menuName = "PluggableAI/State")]
 
 public class State : ScriptableObject
 {

@@ -4,17 +4,17 @@ using System.Collections.Generic;
 
 public class ClassStats : ScriptableObject
 {	
-	public List<Sheet> sheets = new List<Sheet> ();
+	public List<Sheet> sheets = new List<Sheet>();
 
-	[System.SerializableAttribute]
+	//[System.SerializableAttribute]
 	public class Sheet
 	{
 		public string name = string.Empty;
 		public List<Param> list = new List<Param>();
 	}
 
-	[System.SerializableAttribute]
-	public class Param
+    //[System.SerializableAttribute]
+    public class Param
 	{
 		
 		public string ID;

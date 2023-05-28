@@ -22,10 +22,10 @@ public class EnemyVariables
 
     public int waitRounds; //교전 중에 얼마나 기다릴까(플레이어가 쏜 3발정도는 기다리고 4발째 일어나서 대응사격)
     public bool repeatShot; //반복적으로 공격할거냐
-    public float wiatInCoverTime; //엄폐물에서 얼마나 기다릴꺼냐
+    public float waitInCoverTime; //엄폐물에서 얼마나 기다릴꺼냐
     public float coverTime; //이번교전에서 얼마나 숨어있냐
     public float patrolTimer; //정찰중 한지점에서 대기하는 시간
-    public float shorTimer; //총 쏘는 딜레이
+    public float shotTimer; //총 쏘는 딜레이
     public float startShortTimer;
     public float currentShots; //현재 발사한 총알
     public float shotsInRounds; //현재 교전중에서 얼마나 쐈는지
