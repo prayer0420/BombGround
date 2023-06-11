@@ -63,7 +63,7 @@ public class InteractiveWeapon : MonoBehaviour
     private void Awake()
     {
         gameObject.name = this.label_weaponName;
-        gameObject.layer = LayerMask.NameToLayer(TagAndLayer.LayerName.Item);
+        //gameObject.layer = LayerMask.NameToLayer(TagAndLayer.LayerName.Item);
         foreach(Transform tr in transform)
         {
             tr.gameObject.layer = LayerMask.NameToLayer(TagAndLayer.LayerName.Item);
@@ -236,7 +236,7 @@ public class InteractiveWeapon : MonoBehaviour
             //disable physics weapon
             weaponRigidbody.isKinematic = true;
             weaponCollider.enabled = false;
-            inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
+            //inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
             playerInventory.AddWeapon(this);
             Destroy(interactiveRadius);
             this.Toggle(true);
