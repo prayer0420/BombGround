@@ -159,55 +159,58 @@ public class ThridPersonOrbitCam : MonoBehaviour
 
     private void Update()
     {
-        //마우스 이동 값
-        angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1f, 1f) * horizontalAimingSpeed;
-        angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1f, 1f) * verticalAimingSpeed;
-
-        //카메라 수직 이동제한
-        angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticlaAngle);
-
-        //수직 카메라 반동
-        angleV = Mathf.LerpAngle(angleV, angleV + recoilAngle, 10f * Time.deltaTime);
-
-        //카메라 회전
-        Quaternion camYRoation = Quaternion.Euler(0.0f, angleH, 0.0f);
-        Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0.0f);
-        cameraTransform.rotation = aimRotation;
-
-        //set FOV
-        myCamera.fieldOfView = Mathf.Lerp(myCamera.fieldOfView, targetFOV, Time.deltaTime);
-
-        Vector3 baseTempPosition = player.position + camYRoation * targetPivotOffset;
-        //충돌되지 않을 때
-        Vector3 noCollisionOffest = targetCamOffset; // 조준 할 때 카메라의 오프셋 값, 조준할때와 평소와 다르다
-        
-        //targetCamOffset 에서 aim으로 넘어갈때 충돌체크를 하고 넘어감
-        for(float zOffset = targetCamOffset.z; zOffset <= 0f; zOffset += 0.5f)
+        if (!Inventory.inventoryActivated)
         {
-            noCollisionOffest.z = zOffset;
-            //너무가까우면(zOffset값이 0)
-            if (DoubleViewingPosCheck(baseTempPosition + aimRotation * noCollisionOffest,
-                Mathf.Abs(zOffset)) || zOffset == 0f)
+
+            //마우스 이동 값
+            angleH += Mathf.Clamp(Input.GetAxis("Mouse X"), -1f, 1f) * horizontalAimingSpeed;
+            angleV += Mathf.Clamp(Input.GetAxis("Mouse Y"), -1f, 1f) * verticalAimingSpeed;
+
+            //카메라 수직 이동제한
+            angleV = Mathf.Clamp(angleV, minVerticalAngle, targetMaxVerticlaAngle);
+
+            //수직 카메라 반동
+            angleV = Mathf.LerpAngle(angleV, angleV + recoilAngle, 10f * Time.deltaTime);
+
+            //카메라 회전
+            Quaternion camYRoation = Quaternion.Euler(0.0f, angleH, 0.0f);
+            Quaternion aimRotation = Quaternion.Euler(-angleV, angleH, 0.0f);
+            cameraTransform.rotation = aimRotation;
+
+            //set FOV
+            myCamera.fieldOfView = Mathf.Lerp(myCamera.fieldOfView, targetFOV, Time.deltaTime);
+
+            Vector3 baseTempPosition = player.position + camYRoation * targetPivotOffset;
+            //충돌되지 않을 때
+            Vector3 noCollisionOffest = targetCamOffset; // 조준 할 때 카메라의 오프셋 값, 조준할때와 평소와 다르다
+
+            //targetCamOffset 에서 aim으로 넘어갈때 충돌체크를 하고 넘어감
+            for (float zOffset = targetCamOffset.z; zOffset <= 0f; zOffset += 0.5f)
             {
-                break;
+                noCollisionOffest.z = zOffset;
+                //너무가까우면(zOffset값이 0)
+                if (DoubleViewingPosCheck(baseTempPosition + aimRotation * noCollisionOffest,
+                    Mathf.Abs(zOffset)) || zOffset == 0f)
+                {
+                    break;
+                }
+            }
+            //Reposition Camera
+            smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, targetPivotOffset, smooth * Time.deltaTime);
+            smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffest, smooth * Time.deltaTime);
+
+
+            cameraTransform.position = player.position + camYRoation * smoothPivotOffset + aimRotation * smoothCamOffset;
+
+            if (recoilAngle > 0.0f)
+            {
+                recoilAngle -= recoilAngleBound * Time.deltaTime;
+            }
+            else if (recoilAngle < 0.0f)
+            {
+                recoilAngle += recoilAngleBound * Time.deltaTime;
             }
         }
-        //Reposition Camera
-        smoothPivotOffset = Vector3.Lerp(smoothPivotOffset, targetPivotOffset, smooth * Time.deltaTime);
-        smoothCamOffset = Vector3.Lerp(smoothCamOffset, noCollisionOffest, smooth * Time.deltaTime);
-
-
-        cameraTransform.position = player.position + camYRoation * smoothPivotOffset + aimRotation * smoothCamOffset;
-
-        if(recoilAngle > 0.0f)
-        {
-            recoilAngle -= recoilAngleBound * Time.deltaTime;
-        }
-        else if(recoilAngle < 0.0f)
-        {
-            recoilAngle += recoilAngleBound * Time.deltaTime;
-        }
-
     }
 
 

@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6684232731611572921}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: muzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   - component: {fileID: 6684232732262295141}
   - component: {fileID: 6684232732262694113}
   - component: {fileID: -3414100803719737513}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: rifle
   m_TagString: Item
   m_Icon: {fileID: 0}
@@ -127,7 +127,7 @@ GameObject:
   - component: {fileID: 6684232732262295143}
   - component: {fileID: 6684232732265686599}
   - component: {fileID: 6684232732264719495}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Mesh1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

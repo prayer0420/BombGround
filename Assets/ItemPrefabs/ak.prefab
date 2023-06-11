@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 3241630201823393752}
   - component: {fileID: 6664924610902647007}
   - component: {fileID: 2387641879699085564}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: ak
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -96,7 +96,7 @@ GameObject:
   - component: {fileID: 3241630201823393754}
   - component: {fileID: 3241630201824163832}
   - component: {fileID: 3241630201825293624}
-  m_Layer: 0
+  m_Layer: 15
   m_Name: Mesh1
   m_TagString: Untagged
   m_Icon: {fileID: 0}

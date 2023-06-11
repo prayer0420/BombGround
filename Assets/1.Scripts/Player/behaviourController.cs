@@ -108,7 +108,10 @@ public class behaviourController : MonoBehaviour
 
     private void Update()
     {
-        h = Input.GetAxis("Horizontal");
+
+        if (!Inventory.inventoryActivated) { 
+
+            h = Input.GetAxis("Horizontal");
         v = Input.GetAxis("Vertical");
 
         myAnimator.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
@@ -130,7 +133,7 @@ public class behaviourController : MonoBehaviour
 
 
         myAnimator.SetBool(groundedBool, IsGrounded());
-
+        }
     }
 
     //캐릭터 틀어지는것을 방지해서 보정 해줌

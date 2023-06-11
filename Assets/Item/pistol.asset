@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemName: pistol
   itemImage: {fileID: 21300000, guid: 80e627ce4e6ae9644a56d47b00e3a02c, type: 3}
-  itemPrefab: {fileID: 1508934165754910, guid: 68317e2c4c57a6e45be7063240f91cbb, type: 3}
+  itemPrefab: {fileID: 3771543292238688631, guid: 46a2cfcbee4deb4419bd370a4676554f,
+    type: 3}
   itemType: 0
   weaponType: 1

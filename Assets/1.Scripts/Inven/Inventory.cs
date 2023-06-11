@@ -8,7 +8,7 @@ using UnityEngine;
 
         public static bool inventoryActivated = false;  //인벤토리 창이 활성화 되어있는지
 
-
+        //필요한 컴퍼넌트
         [SerializeField]
         private GameObject go_InventoryBase;
 

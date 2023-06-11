@@ -183,18 +183,25 @@ public class MoveBehaviour : GeneriBehaviour
 
     private void Update()
     {
+        if (!Inventory.inventoryActivated)
+        {
         //점프 할수 있는 상황에서 점프키를 눌렀냐
         if(!jump && Input.GetButtonDown(ButtonName.Jump) && behaviourController.IsCurrentBehaviour(this.behaviourCode) &&
             !behaviourController.IsOverriding())
         {
             jump = true;
         }
+
+        }
     }
      
     public override void LocalFixedUpdate()
     {
-        MovementManagement(behaviourController.GetH, behaviourController.GetV);
-        JumpManagement();
+        if (!Inventory.inventoryActivated)
+        {
+            MovementManagement(behaviourController.GetH, behaviourController.GetV);
+            JumpManagement();
+        }
     }
 
 
