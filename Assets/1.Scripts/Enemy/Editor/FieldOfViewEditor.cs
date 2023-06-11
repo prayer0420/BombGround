@@ -46,7 +46,7 @@ public class FieldOfViewEditor : Editor
         Handles.color = Color.yellow;
 
         //총구로부터 타겟까지 선
-        if(fov.targetInSight && fov.personalTarget !=  Vector3.zero)
+        if(fov.targetInSight && fov.personalTarget !=Vector3.zero)
         {
             Handles.DrawLine(fov.enemyAnimation.gunMuzzle.position, fov.personalTarget);
         }

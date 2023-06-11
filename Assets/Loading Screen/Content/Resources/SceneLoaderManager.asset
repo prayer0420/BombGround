@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7decf71d60cb2fe438b4d9a0a160a517, type: 3}
+  m_Name: SceneLoaderManager
+  m_EditorClassIdentifier: 
+  loadingScreenMode: 1
+  sceneList:
+  - SceneName: StartScene
+    SceneAsset: {fileID: 102900000, guid: 23755692b9d15a443a2dd075306eec74, type: 3}
+    DisplayName: StartScene
+    Description: 
+    SkipType: 3
+    LoadingType: 0
+    FakeLoadingTime: 9.2
+    Backgrounds:
+    - {fileID: 21300000, guid: 88062eb6686b51a42b954c1d509241ff, type: 3}
+  - SceneName: FirstScene
+    SceneAsset: {fileID: 102900000, guid: d739181187969a846a8b3c1dcc1d37a9, type: 3}
+    DisplayName: FirstScene
+    Description: 
+    SkipType: 3
+    LoadingType: 1
+    FakeLoadingTime: 5.2
+    Backgrounds: []
+  - SceneName: LoadingScene
+    SceneAsset: {fileID: 102900000, guid: 920b43f3189c53c4a90da9f9a942a658, type: 3}
+    DisplayName: LoadingScene
+    Description: 
+    SkipType: 3
+    LoadingType: 0
+    FakeLoadingTime: 9.6
+    Backgrounds:
+    - {fileID: 21300000, guid: 88062eb6686b51a42b954c1d509241ff, type: 3}
+  - SceneName: PlayGround
+    SceneAsset: {fileID: 102900000, guid: 7f23f7795d4caf44b8203a9c6d6685d3, type: 3}
+    DisplayName: PlayGround
+    Description: 
+    SkipType: 3
+    LoadingType: 1
+    FakeLoadingTime: 5.2
+    Backgrounds: []
+  tipsList:
+  - Create beautiful loading screens for improved your game
+  - Easy to use and implement
+  - 'Remember that have 3 diferent styles for select. '
+  - Create as many tips as you need
+  - Improved the look of your game with awasome backgrounds.
+  - Good backgrounds sounds increase the motivation of players.
+  buildSettingsAsFallback: 1
+  useSynchronousAsFallback: 1

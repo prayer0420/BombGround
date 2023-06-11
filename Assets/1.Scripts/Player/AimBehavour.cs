@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using FC;
-using TreeEditor;
 /// <summary>
 /// 마우스 오른쪽버튼 으로 조준, 다른 동작을 대체 해서 동작하게 됩니다
 /// 마우스 휠버튼으로 좌우 카메라 변경
@@ -175,13 +174,4 @@ public class AimBehavour : GeneriBehaviour
         }
     }
     
-
-
-
-
-
-
-
-
-
 }

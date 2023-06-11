@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea138b4ae79d2764e85f66829abe6e02, type: 3}
   m_Name: AttackAction
   m_EditorClassIdentifier: 
+  targetNear: {fileID: 11400000, guid: 9ab507ae9a684084dbd2c0924866b942, type: 2}
+  isViewing: {fileID: 11400000, guid: 560524fa6cd66d645af0e5062de62d01, type: 2}

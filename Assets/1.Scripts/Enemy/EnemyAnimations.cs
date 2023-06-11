@@ -9,10 +9,10 @@ using System;
 
 public class EnemyAnimations : MonoBehaviour
 {
-    public Animator anim;
-    public float currentAimingAngleGap;//현재 조준중인 각도 차이
-    public Transform gunMuzzle;
-    public float angularSpeed; //조준,회전 하는데 걸리는 시간
+    [HideInInspector] public Animator anim;
+    [HideInInspector] public float currentAimingAngleGap;//현재 조준중인 각도 차이
+    [HideInInspector] public Transform gunMuzzle; //총구
+    [HideInInspector] public float angularSpeed; //조준,회전 하는데 걸리는 시간
 
 
     private StateController controller;
@@ -48,7 +48,7 @@ public class EnemyAnimations : MonoBehaviour
 
 
         //muzzle셋팅
-        foreach(Transform child in anim.GetBoneTransform(HumanBodyBones.RightHand))
+        foreach (Transform child in anim.GetBoneTransform(HumanBodyBones.RightHand))
         {
             gunMuzzle = child.Find("muzzle");
             if(gunMuzzle != null)
@@ -75,7 +75,7 @@ public class EnemyAnimations : MonoBehaviour
         anim.SetFloat(AnimatorKey.AngularSpeed, angularSpeed, controller.generalStats.angularSpeedDampTime, Time.deltaTime);
 
         anim.SetFloat(AnimatorKey.Horizontal, strafeDirection.x, controller.generalStats.speedDampTime, Time.deltaTime);
-        anim.SetFloat(AnimatorKey.Vertical, strafeDirection.y, controller.generalStats.speedDampTime, Time.deltaTime);
+        anim.SetFloat(AnimatorKey.Vertical, strafeDirection.z, controller.generalStats.speedDampTime, Time.deltaTime);
     }
 
     void NavAnimSetup()
@@ -97,6 +97,7 @@ public class EnemyAnimations : MonoBehaviour
 
             if(controller.Strafing)
             {
+                Debug.Log("스트레핑중이다");
                 dest = dest.normalized; //방향
                 Quaternion targetStrafeRotation = Quaternion.LookRotation(dest); //LookRotation에 너무 작은값을 주면 안됨
                 //현재 각도를 타겟을향하도록 부드럽게 회전 시켜줌
@@ -124,7 +125,7 @@ public class EnemyAnimations : MonoBehaviour
         {
             //객체를 이동방향 정면으로 회전시킴
             transform.LookAt(transform.position + nav.desiredVelocity);
-            angle = 0.0f;
+            angle = 0f;
             //조준할수없는데 타겟을 바라보고 있으면
             if(pendingAim && controller.focusSight)
             {
@@ -168,7 +169,7 @@ public class EnemyAnimations : MonoBehaviour
         {
             Vector3 direction = controller.personalTarget - spine.position; //내위치
 
-            if(direction.magnitude < 0.0f || direction.magnitude > 1000000.0f)
+            if(direction.magnitude < 0.01f || direction.magnitude > 1000000.0f)
             {
                 return;
             }
@@ -202,7 +203,7 @@ public class EnemyAnimations : MonoBehaviour
             lastRotation = spine.rotation;
             Vector3 target = controller.personalTarget - gunMuzzle.position;
             Vector3 forward = gunMuzzle.forward;
-            currentAimingAngleGap =  Vector3.Angle(forward, target);
+            currentAimingAngleGap =  Vector3.Angle(target, forward);
 
             timeCountGuard = 0;
 
@@ -213,6 +214,7 @@ public class EnemyAnimations : MonoBehaviour
             lastRotation = spine.rotation;
             spine.rotation *= Quaternion.Slerp(Quaternion.Euler(VectorHelper.ToVector(controller.classStats.AimOffset)), Quaternion.identity, timeCountGuard);
             timeCountGuard += Time.deltaTime;
+            Debug.Log("조준끝났어");
         }
     }
 
@@ -223,6 +225,7 @@ public class EnemyAnimations : MonoBehaviour
 
     public void AbortPendingAim()
     {
+        //controller.enemyAnimation.anim.SetBool(AnimatorKey.Aim, false);
         pendingAim = false;
         controller.Aimimg = false;
     }

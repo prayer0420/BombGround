@@ -7,7 +7,7 @@ public class GeneralStats : ScriptableObject
 {
     [Header("General")]
     [Tooltip("npc 정찰 속도 clear state")]
-    public float patrolSpeed = 2f;
+    public float patrolSpeed = 3f;
     [Tooltip("npc 따라오는 속도 : waring state")]
     public float chaseSpeed = 5f;
     [Tooltip("npc 회피하는 속도 engage statre")]
@@ -21,7 +21,7 @@ public class GeneralStats : ScriptableObject
     [Tooltip("조준시 깜빡임을 피하기 위한 최소 확정 앵글")]
     public float angleDeadZone = 5f;
     [Tooltip("속도 댐핑 시간")]
-    public float speedDampTime = 5f;
+    public float speedDampTime = 0.4f;
     [Tooltip("각속도 댐핑 시간")]
     public float angularSpeedDampTime = 0.2f;
     [Tooltip("각속도 안에서 각도 회전에 따른 반응시간")]

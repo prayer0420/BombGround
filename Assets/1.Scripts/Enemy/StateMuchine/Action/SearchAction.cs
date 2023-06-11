@@ -4,7 +4,6 @@ using UnityEngine;
 using FC;
 /// <summary>
 /// 타겟이 있다면 타겟까지 이동하지만, 타겟을 잃었다면 가만히 서있습니다.
-/// 
 /// </summary>
 
 

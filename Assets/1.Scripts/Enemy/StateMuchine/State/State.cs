@@ -30,14 +30,14 @@ public class State : ScriptableObject
     }
 
     //state가 바뀔때 준비해라~
-    //state갖고있는 action들의 onreayaction다 호출, 각 transtion들의 다 호출../ state가 바뀔 때 호출
+    //state갖고있는 action들의 OnReadyAction다 호출, 각 transtion들의 다 호출../ state가 바뀔 때 호출
     public void OnEnableActions(StateController controller)
     {
         for (int i = 0; i < actions.Length; i++)
         {
             actions[i].OnReadyAction(controller);
         }
-        for (int i = transitions.Length; i>=0; i--)
+        for (int i  = transitions.Length-1; i>=0;  i--)
         {
             transitions[i].decision.OnEnableDecision(controller);
         }

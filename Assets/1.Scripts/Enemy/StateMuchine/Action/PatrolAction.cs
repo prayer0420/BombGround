@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using FC;
 /// <summary>
@@ -12,9 +11,11 @@ using FC;
 
 public class PatrolAction : Action
 {
+    EnemyAnimations enemyAnimations;
     public override void OnReadyAction(StateController controller)
     {
         controller.enemyAnimation.AbortPendingAim(); //조준중이였다면 취소
+        controller.enemyAnimation.anim.SetBool(AnimatorKey.Aim, false);
         controller.enemyAnimation.anim.SetBool(AnimatorKey.Crouch, false); //숨어있었다면 취소
         controller.personalTarget = Vector3.positiveInfinity; //정찰중엔은 타겟도없고
         controller.CoverSpot = Vector3.positiveInfinity; //정찰중엔은 엄폐물도 상관이 없음
@@ -22,18 +23,25 @@ public class PatrolAction : Action
 
     private void Patrol(StateController controller)
     {
+        ////조준중이라면 조준중 없애기
+        //if (controller.Aimimg)
+        //{
+        //    controller.Aimimg = false;
+        //    controller.enemyAnimation.anim.SetBool(AnimatorKey.Aim,false);
+        //}
+
         if (controller.patrolWaypoints.Count == 0)
         {
             return;
         }
+
         controller.focusSight = false;
         controller.nav.speed = controller.generalStats.patrolSpeed;
         //남아있는거리가 멈춰있는 거리보다 작고 , 경로찾는중이아니라면 == 멈췄다면
-        if(controller.nav.remainingDistance<=controller.nav.stoppingDistance && !controller.nav.pathPending)
+        if (controller.nav.remainingDistance <= controller.nav.stoppingDistance && !controller.nav.pathPending)
         {
             controller.variables.patrolTimer += Time.deltaTime;
-
-            if(controller.variables.patrolTimer >= controller.generalStats.partolWaitTime)
+            if (controller.variables.patrolTimer >= controller.generalStats.partolWaitTime)
             {
                 //계속 순환하도록
                 controller.wayPointIndex = (controller.wayPointIndex + 1) % controller.patrolWaypoints.Count;
@@ -44,8 +52,11 @@ public class PatrolAction : Action
         try
         {
             controller.nav.destination = controller.patrolWaypoints[controller.wayPointIndex].position;
+            //controller.nav.speed = 3;
+            //Debug.Log(controller.nav.destination);
+
         }
-        catch(UnassignedReferenceException)
+        catch (UnassignedReferenceException)
         {
             Debug.LogWarning("웨이포인트가 없어요. 셋팅해주세요!", controller.gameObject);
 
@@ -54,7 +65,6 @@ public class PatrolAction : Action
             {
                 controller.transform
             };
-            controller.nav.destination = controller.transform.position;
         }
     }
 
@@ -62,6 +72,7 @@ public class PatrolAction : Action
     public override void Act(StateController controller)
     {
         Patrol(controller);
+        //controller.enemyAnimation.anim.SetBool(AnimatorKey.Aim, false);
     }
 
 }

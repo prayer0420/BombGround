@@ -10,10 +10,8 @@ using UnityEngine.AI;
 public class CoverLookUp : MonoBehaviour
 {
     private List<Vector3[]> allCoverSpots; //현재 레벨에서 존재하는 모든 coverspot들
-
     private GameObject[] covers;
     private List<int> coverHashCodes; //cover unity ID;
-
     private Dictionary<float, Vector3> filteredSpots; //npc로부터 특정위치에서 멀어지는건 필터링된 지점들
 
 
@@ -25,6 +23,10 @@ public class CoverLookUp : MonoBehaviour
         //모든 씬에서 활성화된 모든 게임 오브젝트에 대해 반복
         foreach (GameObject go in Resources.FindObjectsOfTypeAll<GameObject>())
         {
+            if (go == null)
+            {
+                continue;
+            }
             //현재 게임 오브젝트가 활성화된 상태이고, 레이어 마스크에 해당하는 레이어와 일치하는 경우
             if (go.activeInHierarchy && layerMask == (layerMask | (1<< go.layer)))
             {
@@ -38,7 +40,7 @@ public class CoverLookUp : MonoBehaviour
     }
 
 
-    //현재 내가 서있는 지점에서 특정포인트 찍은다음에 그 위치가 나한테 유요한가?(navmesh한테 물어봄)하면서 최적의 위치를 찾음
+    //현재 내가 서있는 지점에서 특정포인트 찍은다음에 그 위치가 나한테 유효한가?(navmesh한테 물어봄)하면서 최적의 위치를 찾음
     //주어진 범위 내에서 특정 포인트가 NavMesh 위에 있는지 확인하고, 유효한 위치를 찾아 리스트에 추가하는 역할
     private void ProcessPoint(List<Vector3> vector3s, Vector3 nativePoint, float range)
     {
@@ -62,7 +64,7 @@ public class CoverLookUp : MonoBehaviour
             float baseHeight = (col.bounds.center - col.bounds.extents).y; //기본높이, 충돌체의 아랫면 높이
             float range = 2 * col.bounds.extents.y; // 충돌체의 전체 높이
 
-            Vector3 deslocalscaleForward = go.transform.forward * go.transform.localScale.z * 0.5f;  //충돌체의 전방으로부터의 이동 벡터
+            Vector3 deslocalForward = go.transform.forward * go.transform.localScale.z * 0.5f;  //충돌체의 전방으로부터의 이동 벡터
             Vector3 deslocalRight = go.transform.right * go.transform.localScale.x * 0.5f; //돌체의 우측 방향으로부터의 이동 벡터
 
             if (go.GetComponent<MeshCollider>())
@@ -80,7 +82,7 @@ public class CoverLookUp : MonoBehaviour
                 if (Physics.Raycast(originForward, col.bounds.center - originForward, out RaycastHit hit, maxBounds, obstacleMask))
                 {
                     //장애물과의 충돌이 발생한 경우, 이동 벡터를 수정
-                    deslocalscaleForward = hit.point- col.bounds.center;
+                    deslocalForward = hit.point- col.bounds.center;
                 }
                 //originRight 위치에서 충돌체의 중심 위치(col.bounds.center)로 향하는 방향으로, maxBounds 범위 내에서 obstacleMask에 해당하는 장애물과의 충돌을 검사
                 if (Physics.Raycast(originRihgt, col.bounds.center - originRihgt, out hit, maxBounds, obstacleMask))
@@ -92,27 +94,27 @@ public class CoverLookUp : MonoBehaviour
             //meshcollider가 없고 1,1,1짜리면
             else if(Vector3.Equals(go.transform.localScale, Vector3.one))
             {
-                deslocalscaleForward = go.transform.forward * col.bounds.extents.z;
+                deslocalForward = go.transform.forward * col.bounds.extents.z;
                 deslocalRight = go.transform.right * col.bounds.extents.x;
             }
 
             float edgeFactor = 0.75f; //가운데 사각형
 
             //12개 샘플링(직사각형을 기준으로 윗줄 5개, 아랫줄 5개, 왼쪽1개, 오른쪽 1개)
-            ProcessPoint(bounds, col.bounds.center + deslocalRight + deslocalscaleForward * edgeFactor, range); //우상단
-            ProcessPoint(bounds, col.bounds.center + deslocalscaleForward + deslocalRight * edgeFactor, range); //우상단
-            ProcessPoint(bounds, col.bounds.center + deslocalscaleForward, range); 
+            ProcessPoint(bounds, col.bounds.center + deslocalRight + deslocalForward * edgeFactor, range); //우상단
+            ProcessPoint(bounds, col.bounds.center + deslocalForward + deslocalRight * edgeFactor, range); //우상단
+            ProcessPoint(bounds, col.bounds.center + deslocalForward, range); 
 
-            ProcessPoint(bounds, col.bounds.center + deslocalscaleForward - deslocalRight * edgeFactor, range);
-            ProcessPoint(bounds, col.bounds.center - deslocalRight + deslocalscaleForward * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center + deslocalForward - deslocalRight * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center - deslocalRight + deslocalForward * edgeFactor, range);
             ProcessPoint(bounds, col.bounds.center + deslocalRight, range);
 
-            ProcessPoint(bounds, col.bounds.center + deslocalRight - deslocalscaleForward * edgeFactor, range);
-            ProcessPoint(bounds, col.bounds.center - deslocalscaleForward + deslocalRight * edgeFactor, range);
-            ProcessPoint(bounds, col.bounds.center - deslocalscaleForward, range);
+            ProcessPoint(bounds, col.bounds.center + deslocalRight - deslocalForward * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center - deslocalForward + deslocalRight * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center - deslocalForward, range);
 
-            ProcessPoint(bounds, col.bounds.center - deslocalscaleForward - deslocalRight * edgeFactor, range);
-            ProcessPoint(bounds, col.bounds.center - deslocalRight - deslocalscaleForward * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center - deslocalForward - deslocalRight * edgeFactor, range);
+            ProcessPoint(bounds, col.bounds.center - deslocalRight - deslocalForward * edgeFactor, range);
             ProcessPoint(bounds, col.bounds.center - deslocalRight, range);
 
         }
@@ -143,8 +145,8 @@ public class CoverLookUp : MonoBehaviour
         {
             
             float targetDis = (target - origin).sqrMagnitude; //타겟까지의 거리
-            float spotDis = (spot - origin).sqrMagnitude; //지점까지의 거리
-            return (targetDis <= spotDis);
+            float spotDist = (spot - origin).sqrMagnitude; //지점까지의 거리
+            return (targetDis <= spotDist);
         }
         return false;
     }
@@ -183,6 +185,7 @@ public class CoverLookUp : MonoBehaviour
                         if (!filteredSpots.ContainsKey(searchDist))
                         {
                             filteredSpots.Add(searchDist, spot);
+                            Debug.Log("스팟찾는둥");
                         }
                         else
                             continue;
@@ -215,6 +218,7 @@ public class CoverLookUp : MonoBehaviour
         }
         else
         {
+            Debug.Log("최적의 엄폐물");
             returnArray.Add(nextCoverHash);
             returnArray.Add(filteredSpots[minDist]);
         }

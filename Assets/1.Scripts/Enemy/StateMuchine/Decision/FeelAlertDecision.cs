@@ -12,6 +12,7 @@ public class FeelAlertDecision : Decision
     public override bool Decide(StateController controller)
     {
         return controller.variables.feelAlert;
+        Debug.Log("feel alert");
     }
 
 

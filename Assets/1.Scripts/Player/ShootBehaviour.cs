@@ -1,7 +1,11 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using FC;
+using System;
+using UnityEngine.EventSystems;
+using System.Net;
 
 /// <summary>
 /// 사격기능 : 사격이 가능한지 여부를 체크하는 기능
@@ -13,7 +17,7 @@ using FC;
 /// 인벤토리 역할. 무기를 소지하고 있는지 확인용
 /// 재장전과 무기교체 기능까지 포함하고 있어요.
 /// </summary>
-public class ShootBehaviour : GeneriBehaviour
+public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
 {
 
     public Texture2D aimCrossHair, shootCrossHair; //십자선
@@ -82,7 +86,7 @@ public class ShootBehaviour : GeneriBehaviour
         changeweaponTrigger = Animator.StringToHash(AnimatorKey.ChangeWeapon);
         shootingTrigger = Animator.StringToHash(AnimatorKey.Shooting);
         reloadBool = Animator.StringToHash(AnimatorKey.Reload);
-        weapons = new List<InteractiveWeapon>(new InteractiveWeapon[3]);
+        weapons = new List<InteractiveWeapon>(new InteractiveWeapon[4]);
         aimBehavour = GetComponent<AimBehavour>();
         bulletHoles = new List<GameObject>();
 
@@ -197,7 +201,7 @@ public class ShootBehaviour : GeneriBehaviour
             behaviourController.GetCamScript.BounceVertical(weapons[weapon].recoilAngle); //반동
 
             //실패율
-            Vector3 imprecision = Random.Range(-shootErroRate, shootErroRate) * behaviourController.playerCamera.forward;
+            Vector3 imprecision = UnityEngine.Random.Range(-shootErroRate, shootErroRate) * behaviourController.playerCamera.forward;
             //올곧은 직선이 아니라 약간 흔들리게 쏨
             Ray ray = new Ray(behaviourController.playerCamera.position, behaviourController.playerCamera.forward + imprecision); 
 
@@ -268,7 +272,6 @@ public class ShootBehaviour : GeneriBehaviour
             {
                 SetWeaponCrossHair(activeWeapon > 0);
                 muzzleFlash.SetActive(false);
-                print("muzzle off");
                 //무기를 장착한 부위가 있으면 
                 if(activeWeapon > 0)
                 {
@@ -278,7 +281,6 @@ public class ShootBehaviour : GeneriBehaviour
                     //총모드에 따라 다음 인터벌 설정
                     if (shotInterval <= (0.4f - 2f * Time.deltaTime))
                     {
-                        print(shotInterval);
 
                         if (weapons[activeWeapon].weaponMode == InteractiveWeapon.WeaponMode.AUTO &&
                             Input.GetAxisRaw(ButtonName.Shoot) != 0)
@@ -304,52 +306,12 @@ public class ShootBehaviour : GeneriBehaviour
         {
           isShotAlive = false;
             behaviourController.GetCamScript.BounceVertical(0); //반동X
-            print("끝");
 
             burstShotCount = 0;
 
         }
     }
 
-    //기존무기와 새로운 무기
-    //획득한 무기를 또 획득하면 무기를 버리고 재장전시켜주고 새로운 무기를 획득했다면 빈 슬롯에 장착
-    private void ChangeWeapon(int oldWeapon, int newWeapon)
-    {
-        if(oldWeapon > 0)
-        {
-            weapons[oldWeapon].gameObject.SetActive(false);
-
-            gunMuzzle = null;
-            weapons[oldWeapon].Toggle(false);
-        }
-
-        //기존에 갖고있지 않다면
-        while (weapons[newWeapon] == null && newWeapon > 0)
-        {
-            //빈슬롯을 찾는다
-            Debug.Log(weapons.Count);
-            newWeapon = (newWeapon + 1) % weapons.Count;
-        }
-        //무기를 줏었으면
-        if (newWeapon > 0)
-        {
-            weapons[newWeapon].gameObject.SetActive(true);
-            gunMuzzle = weapons[newWeapon].transform.Find("muzzle");
-            weapons[newWeapon].Toggle(true);
-        }
-
-        activeWeapon = newWeapon;
-
-        if(oldWeapon != newWeapon)
-        {
-            //총기교환
-            behaviourController.GetAnimator.SetTrigger(changeweaponTrigger);
-            behaviourController.GetAnimator.SetInteger(weaponType, weapons[newWeapon] ? (int)weapons[newWeapon].weaponType : 0);
-        }
-        //새로운 무기의 십자선으로 바꿈
-        SetWeaponCrossHair(newWeapon > 0);
-
-    }
 
     //총을 쏘거나 재장전하거나 버리거나
     private void Update()
@@ -399,7 +361,7 @@ public class ShootBehaviour : GeneriBehaviour
             {
                 isChangingWeapon = true;
                 int nextWeapon = activeWeapon + 1;
-                ChangeWeapon(activeWeapon, nextWeapon % weapons.Count);
+                ChangeWeapon(activeWeapon, nextWeapon);
             }
 
             else if (Mathf.Abs(Input.GetAxisRaw(ButtonName.Change)) < Mathf.Epsilon)
@@ -413,18 +375,25 @@ public class ShootBehaviour : GeneriBehaviour
             ShotProgress();
         }
         isAiming = behaviourController.GetAnimator.GetBool(aimBool);
+
     }
 
     /// <summary>
     /// 인벤토리 역할을 하게 될 함수
     /// </summary>
     /// <param name="weapon"></param>
+    /// 
+
+    public Inventory inventory;
+
+
     public void AddWeapon(InteractiveWeapon newWeapon)
     {
         newWeapon.gameObject.transform.SetParent(rightHand);
         newWeapon.transform.localPosition = newWeapon.rightHandPosition;
         newWeapon.transform.localRotation = Quaternion.Euler(newWeapon.relativeRotation);
-
+      
+        
         //똑같은 타입의 무기를 줏었다면
         if (weapons[slotMap[newWeapon.weaponType]])
         {
@@ -441,14 +410,96 @@ public class ShootBehaviour : GeneriBehaviour
             //똑같은 무기가 아니라면
             else
             {
-                //갖고있던 무기를 떨궈
-                weapons[slotMap[newWeapon.weaponType]].Drop();
+                //inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
+                weapons[slotMap[newWeapon.weaponType]] = newWeapon;
+                //퀵슬롯에 넣기
+                
             }
+            //갖고있던 무기를 떨궈
+            //weapons[slotMap[newWeapon.weaponType]].Drop();
         }
         //다른 타입의 무기를 줏었다면
         weapons[slotMap[newWeapon.weaponType]] = newWeapon;
-        ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType] );
+        //퀵슬롯에 넣기
+        ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType]);
     }
+
+
+    //기존무기와 새로운 무기
+    //획득한 무기를 또 획득하면 무기를 버리고 재장전시켜주고 새로운 무기를 획득했다면 빈 슬롯에 장착
+    public void ChangeWeapon(int oldWeapon, int newWeapon)
+    {
+        
+
+
+        if (oldWeapon > 0)
+        {
+            weapons[oldWeapon].gameObject.SetActive(false);
+            gunMuzzle = null;
+            weapons[oldWeapon].Toggle(false);
+        }
+
+        //기존에 갖고있지 않다면
+        while (weapons[newWeapon] == null && newWeapon > 0)
+        {
+            //빈슬롯을 찾는다
+            Debug.Log(weapons);
+            newWeapon = (newWeapon + 1) % weapons.Count;
+        }
+        //무기를 줏었으면
+        if (newWeapon > 0)
+        {
+            weapons[newWeapon].gameObject.SetActive(true);
+            gunMuzzle = weapons[newWeapon].transform.Find("muzzle");
+            weapons[newWeapon].Toggle(true);
+        }
+
+        activeWeapon = newWeapon;
+
+        if (oldWeapon != newWeapon)
+        {
+            //총기교환
+            behaviourController.GetAnimator.SetTrigger(changeweaponTrigger);
+            behaviourController.GetAnimator.SetInteger(weaponType, weapons[newWeapon] ? (int)weapons[newWeapon].weaponType : 0);
+        }
+        //새로운 무기의 십자선으로 바꿈
+        SetWeaponCrossHair(newWeapon > 0);
+
+    }
+
+    public void ChangeWeapon(string weaponType, string weaponName)
+    {
+        //기존에 팔에 붙어있는거를 fasle
+        //클릭한것에 해당하는 아이템을 true로해야함
+        //손잡는것도 바뀌어야함
+        //밑에 이미지도 바껴야함
+        //애니메이션도 바껴야함
+    }
+
+    //Slot slot;
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    if (eventData.button == PointerEventData.InputButton.Right)
+    //    {
+    //        if (slot.item!= null)
+    //        {
+    //            if (slot.item.itemType == Item.ItemType.Equipment)
+    //            {
+    //                Debug.Log("asd");
+    //                //장착
+    //                ChangeWeapon(activeWeapon, weapons.Count-1);
+                    
+    //            }
+    //            else
+    //            {
+    //                //소모
+    //                Debug.Log(slot.item.itemName + "을 사용했습니다");
+    //                slot.SetSlotCount(-1);
+    //            }
+    //        }
+    //    }
+    //}
+
 
     private bool CheckforBlockedAim()
     {

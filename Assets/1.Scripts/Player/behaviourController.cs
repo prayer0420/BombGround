@@ -1,8 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.UIElements;
 
 /// <summary>
 /// 현재 동작(current), 기본 동작(default), 오버라이딩 동작, 잠긴동작, 마우스 이동값

@@ -14,7 +14,9 @@ public class EndBurstDecision : Decision
     public override bool Decide(StateController controller)
     {
         //사격을 많이 했으면 TRUE ,  재장전(WAIT)
+        Debug.Log("end burst");
         return controller.variables.currentShots >= controller.variables.shotsInRounds;
+
     }
 
     

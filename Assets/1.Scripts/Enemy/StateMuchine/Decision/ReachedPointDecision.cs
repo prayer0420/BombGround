@@ -17,8 +17,11 @@ public class ReachedPointDecision : Decision
             return false;
         }
         //남은게 멈춰있는것보다 작고(거의도착했다는뜻), 길찾기 대기중이 아니라면
-        if(controller.nav.remainingDistance <= controller.nav.stoppingDistance && !controller.nav.pathPending)
+        if (controller.nav.remainingDistance - controller.nav.stoppingDistance < 0.1f && !controller.nav.pathPending)
         {
+            Debug.Log(controller.nav.remainingDistance);
+            Debug.Log(controller.nav.stoppingDistance);
+            Debug.Log("도착?");
             return true;
         }
         else
@@ -28,3 +31,4 @@ public class ReachedPointDecision : Decision
 
     }
 }
+

@@ -59,6 +59,7 @@ public class FocusDecision : Decision
             }
             controller.targetInSight = true;
             controller.personalTarget = controller.aimTarget.position;
+            Debug.Log("타겟쏠준비됐다");
             return true;
         }
         return false;
@@ -67,9 +68,10 @@ public class FocusDecision : Decision
 
     public override bool Decide(StateController controller)
     {
+
         //가깝지 않은 상태에서 경고를 느끼고 시야가 막히지 않았다면
         return (sense != Sense.NEAR && controller.variables.feelAlert && !controller.BlockedSight()) ||
-                CheckTargetInRadius(controller, radius, MyHandleTargets);
+                Decision.CheckTargetInRadius(controller, radius, MyHandleTargets);
 
     }
 }

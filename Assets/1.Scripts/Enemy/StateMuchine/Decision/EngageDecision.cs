@@ -21,7 +21,7 @@ public class EngageDecision : Decision
         if(isViewing.Decide(controller) || targetNear.Decide(controller))
         {
             //플레이어가 사라졌을때부터 인지하고 있는 시간을 초기화
-            controller.variables.blindEngageTimer = 0;
+            controller.variables.blindEngageTimer = 0; 
 
         }
 
@@ -32,6 +32,7 @@ public class EngageDecision : Decision
             controller.variables.blindEngageTimer = 0;
             return false;
         }
+        Debug.Log("Engage");
         return true;
     }
 }

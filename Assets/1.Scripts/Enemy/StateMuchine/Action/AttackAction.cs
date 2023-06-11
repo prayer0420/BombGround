@@ -17,16 +17,17 @@ public class AttackAction : Action
 {
     private readonly float startShootDelay = 0.2f; //발사간격 딜레이
     private readonly float aimAngleGap = 30f; //조준각도의 차이
+    ClearShotDecision clearShotDecision;
 
     public override void OnReadyAction(StateController controller)
     {
         //최대 쏠 수있는 총알갯수를 랜덤으로 지정
-        controller.variables.shotsInRounds = Random.Range(controller.maximumBurst /2 , controller.maximumBurst);
+        controller.variables.shotsInRounds = Random.Range(controller.maximumBurst/2, controller.maximumBurst);
         controller.variables.currentShots = 0; //초기화
-        controller.variables.startShortTimer = 0f; //총쏠수있는 타이밍 체크
+        controller.variables.startShootTimer = 0f; //총쏠수있는 타이밍 체크
         controller.enemyAnimation.anim.ResetTrigger(AnimatorKey.Shooting); //발사중인건 멈추고
         controller.enemyAnimation.anim.SetBool(AnimatorKey.Crouch, false); //엄폐하고있으면 일어나기
-        controller.variables.waitInCoverTime = 0f; //엄폐물에서 기다린시간 초기화
+        controller.variables.waitInCoverTime = 0; //엄폐물에서 기다린시간 초기화
         controller.enemyAnimation.ActivePendingAim(); //조준대기, 이제 시야에만 들어오면 조중가능
     }
 
@@ -45,7 +46,7 @@ public class AttackAction : Action
 
         //총알 발사체 궤적 
         GameObject shotTracer = EffectManager.Instance.EffectOneShot((int)EffectList.tracer, Vector3.zero);
-        shotTracer.transform.SetParent (controller.enemyAnimation.gunMuzzle);
+        shotTracer.transform.SetParent(controller.enemyAnimation.gunMuzzle);
         Vector3 origin = controller.enemyAnimation.gunMuzzle.position;
         shotTracer.transform.position = origin;
         shotTracer.transform.rotation = Quaternion.LookRotation(direction);
@@ -64,7 +65,7 @@ public class AttackAction : Action
         {
             HealthBase targetHealth =  target.GetComponent<HealthBase>(); // playerHealth
 
-            if(targetHealth != null)
+            if(targetHealth)
             {
                 targetHealth.TakeDamage(hitPoint, direction, controller.classStats.BulletDamage, target.GetComponent<Collider>(), controller.gameObject);
             }
@@ -75,12 +76,12 @@ public class AttackAction : Action
     }
 
 
-    /// 3. 충돌 검출을 하는데 약간의 사격시 충결파도 더해주게 된다(오발률)
+    /// 3. 충돌 검출을 하는데 약간의 사격시 충격파도 더해주게 된다(오발률)
     private void CastShot(StateController controller)
     {
         //오발률 설정
-        Vector3 impercision = Random.Range(controller.classStats.ShotErrorRate, controller.classStats.ShotRateFactor) * controller.transform.right; //오른쪽으로 좀 치우치기
-        impercision += Random.Range(controller.classStats.ShotErrorRate, controller.classStats.ShotRateFactor) * controller.transform.up; //위로 좀 치우치기
+        Vector3 impercision = Random.Range(-controller.classStats.ShotErrorRate, controller.classStats.ShotErrorRate) * controller.transform.right; //오른쪽으로 좀 치우치기
+        impercision += Random.Range(-controller.classStats.ShotErrorRate, controller.classStats.ShotErrorRate) * controller.transform.up; //위로 좀 치우치기
 
         Vector3 shotDirection = controller.personalTarget - controller.enemyAnimation.gunMuzzle.position;
         shotDirection = shotDirection.normalized + impercision;
@@ -99,21 +100,28 @@ public class AttackAction : Action
 
     /// 1. 조준 중이고 조준 유효 각도 안에 타겟이 있거나 가깝다면
     /// 2. 발사 간격 딜레이가 충분히 되었다면 애니메이션을 재생
+    public FocusDecision targetNear; //가까이 있니?
+    public LookDecision isViewing;
+    public EnemyAnimations enemyAnimations;
+
+
     private bool CanShoot(StateController controller)
     {
         //타겟과 총구사이 거리
         float distance = (controller.personalTarget - controller.enemyAnimation.gunMuzzle.position).sqrMagnitude;
 
+
         //각도 차이안에 들어가있고, 조준중이고, 거리가 가깝다면
-        if(controller.Aimimg && (controller.enemyAnimation.currentAimingAngleGap < aimAngleGap) || distance <= 5.0f)
-        {
-            if(controller.variables.startShortTimer >= startShootDelay)
+        if (!controller.reloading && controller.Aimimg && (controller.enemyAnimation.currentAimingAngleGap < aimAngleGap) || distance <= 7.0f || targetNear.Decide(controller))
+            //if (controller.Aimimg && (controller.enemyAnimation.currentAimingAngleGap < aimAngleGap) || distance <= 7.0f)
+            {
+            if(controller.variables.startShootTimer >= startShootDelay)
             {
                 return true;
             }
             else
             {
-                controller.variables.startShortTimer += Time.deltaTime;
+                controller.variables.startShootTimer += Time.deltaTime;
             }
         }
         return false;
@@ -123,16 +131,18 @@ public class AttackAction : Action
     {
 
         //shotTimer가 0이되면 발사함
-        if(Time.timeScale >0 && controller.variables.shotTimer == 0f)
+        if(Time.timeScale > 0 && controller.variables.shotTimer == 0f)
         {
             controller.enemyAnimation.anim.SetTrigger(AnimatorKey.Shooting);
             CastShot(controller);
+            //Debug.Log(controller.variables.shotTimer);
         }
-        else if(controller.variables.shotTimer >= (0.1f + 2f * Time.deltaTime))
+        else if(controller.variables.shotTimer >= (3f * Time.deltaTime))
         {
             controller.bullets = Mathf.Max(--controller.bullets, 0);
             controller.variables.currentShots++;
-            controller.variables.shotTimer = 0f;
+            controller.variables.shotTimer = 0;
+            //Debug.Log(controller.variables.shotTimer);
             return;
         }
         

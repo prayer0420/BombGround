@@ -1,7 +1,5 @@
-﻿using NPOI.SS.Formula.Functions;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.ComTypes;
 using UnityEngine;
 using UnityEngine.AI;
 /// <summary>
@@ -12,14 +10,14 @@ using UnityEngine.AI;
 public class StateController : MonoBehaviour
 {
     public GeneralStats generalStats;
-    public ClassStats stadata;
+    public ClassStats statdata;
     public string classID; //PISTOL, RIFLE, AK
     public ClassStats.Param classStats
     {
         //get할떄마다 클래스상에서 지정한 아이디를 엑셀데이터에서 불러옴
         get
         {
-            foreach(ClassStats.Sheet sheet in stadata.sheets)
+            foreach(ClassStats.Sheet sheet in statdata.sheets)
             {
                 foreach(ClassStats.Param param in sheet.list)
                 {
@@ -54,11 +52,11 @@ public class StateController : MonoBehaviour
     public float perceptionRadius;
 
     
-    [HideInInspector] public float nearRadius;
+    [HideInInspector]public float nearRadius;
     [HideInInspector]public NavMeshAgent nav;
-    [HideInInspector]public int wayPointIndex;
+    [HideInInspector]public int wayPointIndex; //way포인트
     [HideInInspector]public int maximumBurst = 7; //유효한 총알 개수
-    [HideInInspector]public float blindEngageTime = 30f; //플레이어가 시야에 사라졌을때 플레이어를 찾는 시간(초과하면 다시 정찰로 돌아감)
+    [HideInInspector]public float blindEngageTime = 5f; //플레이어가 시야에 사라졌을때 플레이어를 찾는 시간(초과하면 다시 정찰로 돌아감)
     [HideInInspector]public bool targetInSight; //타겟이 내 시야안에 있는지
     [HideInInspector]public bool focusSight; //시야를 포커싱 할건지
     [HideInInspector]public bool reloading; //재장전 중이냐
@@ -100,7 +98,7 @@ public class StateController : MonoBehaviour
         get => strafing;
         set
         {
-            enemyAnimation.anim.SetBool("Strafing", value);
+            enemyAnimation.anim.SetBool("Strafe", value);
             strafing = value;
         }
     }
@@ -240,7 +238,6 @@ public class StateController : MonoBehaviour
         //죽은 npc가 점유하고있던 스팟을 다시 초기화
         coverSpot.Remove(this.GetHashCode());
     }
-
 
 
 }

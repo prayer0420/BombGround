@@ -3,7 +3,7 @@ public enum EffectType
 {
     None = -1,
     NORMAL,
-   BGM,
+    BGM,
     EFFECT,
     UI,
 }

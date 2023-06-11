@@ -20,6 +20,7 @@ public class LookDecision : Decision
             {
                 controller.targetInSight = true;
                 controller.personalTarget = controller.aimTarget.position;
+                Debug.Log("적이 시야각 1/2에 보였다!");
                 return true;
             }
         }

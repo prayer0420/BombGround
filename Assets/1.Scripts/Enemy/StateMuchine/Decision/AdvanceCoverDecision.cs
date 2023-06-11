@@ -19,7 +19,7 @@ public class AdvanceCoverDecision : Decision
     {
         controller.variables.waitRounds += 1;
         //장애물을 이동할지를 랜덤하게(스탯으로 조정) 판단
-        controller.variables.advanceCoverDecision = Random.Range(0f, 1f) < controller.classStats.ChangeCoverChance / 100;
+        controller.variables.advanceCoverDecision = Random.Range(0f, 1f) < controller.classStats.ChangeCoverChance / 100f;
     }
 
     public override bool Decide(StateController controller)

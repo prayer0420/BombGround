@@ -20,6 +20,7 @@ namespace FC
             public const string Enemy = "Enemy";
             public const string Bound = "Bound";
             public const string Environment = "Environment";
+            public const string Item= "Item";
         }
 
         public enum LayerIndex
@@ -36,6 +37,7 @@ namespace FC
             Enemy = 12,
             Bound = 13,
             Environment = 14,
+            Item = 15,  
             
         }
 
@@ -54,6 +56,7 @@ namespace FC
             public const int Enemy = 1 << 12;
             public const int Bound = 1 << 13;
             public const int Environment = 1 << 14;
+            public const int Item = 1 << 15;
         }
 
 
@@ -70,6 +73,7 @@ namespace FC
             public const string Enemy = "Enemy";
             public const string GameController = "GameController";
             public const string Finish = "Finish";
+            public const string Item = "Item";
         }
 
     }

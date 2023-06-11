@@ -14,7 +14,7 @@ public class ClearShotDecision : Decision
     public FocusDecision targetNear;
     
     //지금 클리어샷 가능한지
-    private bool HaveClearShot(StateController controller)
+    public bool HaveClearShot(StateController controller)
     {
         //목 정도 위치
         Vector3 shotOrigin = controller.transform.position + Vector3.up * (controller.generalStats.aboveCoverHeight + controller.nav.radius);
@@ -23,25 +23,28 @@ public class ClearShotDecision : Decision
         Vector3 shotDirection = controller.personalTarget - shotOrigin;
 
         //1. 내 위치에 구형태의 raycast를 만들어서 바로 가까운곳에 장애물이있는지 체크
-        bool blockShot = Physics.SphereCast(shotOrigin, controller.nav.radius, shotDirection, out RaycastHit hit, controller.nearRadius, controller.generalStats.coverMask | controller.generalStats.obstacleMask);
+        bool blockedShot = Physics.SphereCast(shotOrigin, controller.nav.radius, shotDirection, out RaycastHit hit, controller.nearRadius, controller.generalStats.coverMask | controller.generalStats.obstacleMask);
 
-        if (!blockShot)
+        if(!blockedShot)
         {
             //2. 총구위치에서 장애물이있는지 없는지 체크
-            blockShot = Physics.Raycast(shotOrigin, shotDirection, out hit, shotDirection.magnitude, controller.generalStats.coverMask | controller.generalStats.obstacleMask);
+            blockedShot = Physics.Raycast(shotOrigin, shotDirection, out hit, shotDirection.magnitude, controller.generalStats.coverMask | controller.generalStats.obstacleMask);
                 //무언가 막히긴했는데
-                if(blockShot)
+                if(blockedShot)
                 {
                     //막히긴했는데 플레이어인 경우
-                    blockShot = (hit.transform.root == controller.aimTarget.root);
+                    blockedShot = !(hit.transform.root == controller.aimTarget.root);
+                    
+                    Debug.Log("클리어샷!");
                 }
         }
-        return !blockShot;
+        return !blockedShot;
     }
     
 
     public override bool Decide(StateController controller)
     {
+        Debug.Log("Clear shot");
         return targetNear.Decide(controller) || HaveClearShot(controller);
     }
 }

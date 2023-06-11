@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+
 // feel shot decision.. 
 
 // cover decision..
@@ -26,7 +24,7 @@ public class EnemyVariables
     public float coverTime; //이번교전에서 얼마나 숨어있냐
     public float patrolTimer; //정찰중 한지점에서 대기하는 시간
     public float shotTimer; //총 쏘는 딜레이
-    public float startShortTimer;
+    public float startShootTimer;
     public float currentShots; //현재 발사한 총알
     public float shotsInRounds; //현재 교전중에서 얼마나 쐈는지
     public float blindEngageTimer; //플레이어 교전중에 사라졌을때 그 플레이어에 대해서 얼마나 인지하고있느냐(플레이어 찾아야함)
