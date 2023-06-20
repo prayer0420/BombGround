@@ -159,7 +159,7 @@ public class ThridPersonOrbitCam : MonoBehaviour
 
     private void Update()
     {
-        if (!Inventory.inventoryActivated)
+        if (MoveBehaviour.CanMove)
         {
 
             //마우스 이동 값

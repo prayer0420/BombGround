@@ -73,6 +73,7 @@ public class behaviourController : MonoBehaviour
         return Mathf.Abs(h) > Mathf.Epsilon;
     }
 
+    //달릴수 있는지 확인
     public bool CanSprint()
     {
         foreach (GeneriBehaviour behaviour in behaviours)
@@ -106,33 +107,34 @@ public class behaviourController : MonoBehaviour
         return Physics.SphereCast(ray, colExtents.x, colExtents.x + 0.2f);
     }
 
-    private void Update()
+    public void Update()
     {
 
-        if (!Inventory.inventoryActivated) { 
-
+        if (true)
+            //if (!Inventory.inventoryActivated & !Settings.SettingActivated) 
+        { 
             h = Input.GetAxis("Horizontal");
-        v = Input.GetAxis("Vertical");
+            v = Input.GetAxis("Vertical");
 
-        myAnimator.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
-        myAnimator.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
+            myAnimator.SetFloat(hFloat, h, 0.1f, Time.deltaTime);
+            myAnimator.SetFloat(vFloat, v, 0.1f, Time.deltaTime);
 
-        sprint = Input.GetButton(ButtonName.Sprint);
+            sprint = Input.GetButton(ButtonName.Sprint);
 
-        //달리기중이면 fov를 바꾸고 달리기가 끝나면 fov를 다시 원래대로 돌아와라
-        if ((IsSprinting()))
-        {
-            changedFOV = true;
-            camScript.SetFOV(sprintFOV);
-        }
-        else if (changedFOV)
-        {
-            camScript.ResetFOV();
-            changedFOV = false;
-        }
+            //달리기중이면 fov를 바꾸고 달리기가 끝나면 fov를 다시 원래대로 돌아와라
+            if ((IsSprinting()))
+            {
+                changedFOV = true;
+                camScript.SetFOV(sprintFOV);
+            }
+            else if (changedFOV)
+            {
+                camScript.ResetFOV();
+                changedFOV = false;
+            }
 
 
-        myAnimator.SetBool(groundedBool, IsGrounded());
+            myAnimator.SetBool(groundedBool, IsGrounded());
         }
     }
 

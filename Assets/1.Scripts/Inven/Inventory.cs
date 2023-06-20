@@ -34,9 +34,15 @@ using UnityEngine;
                 inventoryActivated = !inventoryActivated;
 
                 if (inventoryActivated)
-                    OpenInventory();
+                {
+                   OpenInventory();
+                   MoveBehaviour.CanMove = false;
+                }
                 else
-                    ClosInventory();
+                {
+                   ClosInventory();
+                   MoveBehaviour.CanMove = true;
+                }
             }
         }
 

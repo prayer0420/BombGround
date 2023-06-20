@@ -685,6 +685,16 @@ PrefabInstance:
       propertyPath: LoadingTextFormat
       value: "\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t"
       objectReference: {fileID: 0}
+    - target: {fileID: 114613629119356288, guid: 3a9e4211cc9364b4b8d2cfa7e49b7e29,
+        type: 3}
+      propertyPath: ShowDescription
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114613629119356288, guid: 3a9e4211cc9364b4b8d2cfa7e49b7e29,
+        type: 3}
+      propertyPath: useBackgrounds
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 114651075902515802, guid: 3a9e4211cc9364b4b8d2cfa7e49b7e29,
         type: 3}
       propertyPath: m_Sprite

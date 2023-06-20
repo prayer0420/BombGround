@@ -10,7 +10,7 @@ public class HealthBase : MonoBehaviour
         public float damage;
         public Collider bodyPart;
         public GameObject origin;
-
+        
 
         public DamageInfo(Vector3 loacation, Vector3 direction, float damage, Collider bodyPart= null, GameObject origin = null)
         {
@@ -37,4 +37,8 @@ public class HealthBase : MonoBehaviour
         this.TakeDamage(damageInfo.loacation, damageInfo.direction, damageInfo.damage, damageInfo.bodyPart, damageInfo.origin);
     }
 
+    public virtual void RecoveryHp(float hp)
+    {
+
+    }
 }

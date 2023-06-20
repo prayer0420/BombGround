@@ -11,7 +11,6 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     public int itemCount; //획득한 아이템 개수
     public Image itemImage; //아이템의 이미지
 
-
     //필요한 컴포넌트
     [SerializeField]
     private Text text_Count; //아이템 개수 텍스트
@@ -19,18 +18,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     private GameObject go_CountImage; //아이템 개수 이미지가 들어갈 원(파란색)
     private Rect baseRect;
 
-    private WeaponManager theWeaponManager;
-    InteractiveWeapon interactiveWeapon;
-
     public GameObject player;
     private ShootBehaviour shootBehaviour;
     private InputNumber inputNumber;
 
+    private ItemEffectDatabase itemEffectDatabase;
+
 
     void Start()
     {
-        interactiveWeapon = GetComponent<InteractiveWeapon>();
-        theWeaponManager = FindObjectOfType<WeaponManager>();
+        itemEffectDatabase = FindObjectOfType<ItemEffectDatabase>();
         shootBehaviour = FindObjectOfType<ShootBehaviour>();
         baseRect =  transform.parent.parent.GetComponent<RectTransform>().rect; //인벤토리 창의 rectTransform정보를 받아옴
         inputNumber = FindObjectOfType<InputNumber>();
@@ -90,20 +87,16 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     }
     public void OnPointerClick(PointerEventData eventData)
     {
+        //우클릭누르면 사용
         if (eventData.button == PointerEventData.InputButton.Right)
         {
             if (item != null)
             {
-                if (item.itemType == Item.ItemType.Equipment)
+                //사용
+                Debug.Log("아이템 사용");
+                itemEffectDatabase.UseItem(item);
+                if(item.itemType == Item.ItemType.Used)
                 {
-                    Debug.Log("asd");
-                    
-                    //장착
-                }
-                else
-                {
-                    //소모
-                    Debug.Log(item.itemName + "을 사용했습니다");
                     SetSlotCount(-1);
                 }
             }

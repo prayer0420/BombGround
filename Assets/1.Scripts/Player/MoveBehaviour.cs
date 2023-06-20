@@ -100,6 +100,10 @@ public class MoveBehaviour : GeneriBehaviour
         {
             RemoveVerticalVelocity();
         }
+        else if (Settings.SettingActivated)
+        {
+            speed = 0;
+        }
 
         //회전
         Rotating(horizontal, vertical);
@@ -183,26 +187,22 @@ public class MoveBehaviour : GeneriBehaviour
 
     private void Update()
     {
-        if (!Inventory.inventoryActivated)
-        {
-        //점프 할수 있는 상황에서 점프키를 눌렀냐
-        if(!jump && Input.GetButtonDown(ButtonName.Jump) && behaviourController.IsCurrentBehaviour(this.behaviourCode) &&
-            !behaviourController.IsOverriding())
-        {
-            jump = true;
-        }
-
-        }
+            //점프 할수 있는 상황에서 점프키를 눌렀냐
+            if(!jump && Input.GetButtonDown(ButtonName.Jump) && behaviourController.IsCurrentBehaviour(this.behaviourCode) &&
+                !behaviourController.IsOverriding())
+            {
+                jump = true;
+            }
     }
-     
+
+    public static bool CanMove = true;
+
     public override void LocalFixedUpdate()
     {
-        if (!Inventory.inventoryActivated)
+        if (CanMove)
         {
             MovementManagement(behaviourController.GetH, behaviourController.GetV);
             JumpManagement();
         }
     }
-
-
 }

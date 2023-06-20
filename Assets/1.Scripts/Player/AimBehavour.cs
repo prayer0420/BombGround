@@ -135,27 +135,30 @@ public class AimBehavour : GeneriBehaviour
     {
         peekCorner = behaviourController.GetAnimator.GetBool(cornerBool);
 
-        //aim버튼을 누르고 있을때
-        if(Input.GetAxisRaw(ButtonName.Aim) != 0 && !aim)
+        if (MoveBehaviour.CanMove)
         {
-            StartCoroutine(ToggleAimOn());
-        }
-        //버튼 뗐을때
-        else if(aim && Input.GetAxisRaw(ButtonName.Aim)==0)
-        {
-            StartCoroutine (ToggleAimOff());
-        }
+            //aim버튼을 누르고 있을때
+            if(Input.GetAxisRaw(ButtonName.Aim) != 0 && !aim)
+            {
+                StartCoroutine(ToggleAimOn());
+            }
+            //버튼 뗐을때
+            else if(aim && Input.GetAxisRaw(ButtonName.Aim)==0)
+            {
+                StartCoroutine (ToggleAimOff());
+            }
 
-        //조준중일때는 빨리 달리기를 하지 않습니다.
-        canSprint = !aim;
-        //휠버튼 사용 할 때
-        if(aim && Input.GetButtonDown(ButtonName.Shoulder) && !peekCorner)
-        {
-            //좌우 바꾸기
-            aimCamOffset.x = aimCamOffset.x * (-1);
-            aimPivotOffset.x = aimPivotOffset.x * (-1);
+            //조준중일때는 빨리 달리기를 하지 않습니다.
+            canSprint = !aim;
+            //휠버튼 사용 할 때
+            if(aim && Input.GetButtonDown(ButtonName.Shoulder) && !peekCorner)
+            {
+                //좌우 바꾸기
+                aimCamOffset.x = aimCamOffset.x * (-1);
+                aimPivotOffset.x = aimPivotOffset.x * (-1);
+            }
+            behaviourController.GetAnimator.SetBool(aimBool, aim);
         }
-        behaviourController.GetAnimator.SetBool(aimBool, aim);
     }
 
     private void OnGUI()
