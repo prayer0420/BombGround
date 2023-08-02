@@ -7,9 +7,10 @@ using UnityEngine.EventSystems;
 public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDragHandler, IEndDragHandler, IDropHandler
 {
 
-    public Item item; //획득한 아이템
-    public int itemCount; //획득한 아이템 개수
+    public InteractiveWeapon item; //획득한 아이템
+    public int itemCount; //획득한 아이템 개수'
     public Image itemImage; //아이템의 이미지
+
 
     //필요한 컴포넌트
     [SerializeField]
@@ -43,13 +44,14 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         itemImage.color = color;
     }
 
-    public void AddItem(Item _item, int _count = 1)
+    public void AddItem(InteractiveWeapon weapon, int _count = 1)
     {
-        item = _item;
+        Debug.Log("슬롯에 넣기");
+        item = weapon;
         itemCount = _count;
         itemImage.sprite = item.itemImage;
 
-        if(item.itemType != Item.ItemType.Equipment)
+        if (weapon.itemType != InteractiveWeapon.ItemType.Equipment)
         {
             go_CountImage.SetActive(true);
             text_Count.text = itemCount.ToString();
@@ -61,6 +63,25 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         }
         SetColor(1);
     }
+
+    //public void AddItem2(Item _item, int _count = 1)
+    //{
+    //    item2 = _item;
+    //    itemCount2 = _count;
+    //    itemImage.sprite = item2.itemImage;
+
+    //    if (item2.itemType != Item.ItemType.Equipment)
+    //    {
+    //        go_CountImage.SetActive(true);
+    //        text_Count.text = itemCount.ToString();
+    //    }
+    //    else
+    //    {
+    //        text_Count.text = "0";
+    //        go_CountImage.SetActive(false);
+    //    }
+    //    SetColor(1);
+    //}
 
     //아이템 개수조정
     public void SetSlotCount(int _count)
@@ -95,13 +116,31 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 //사용
                 Debug.Log("아이템 사용");
                 itemEffectDatabase.UseItem(item);
-                if(item.itemType == Item.ItemType.Used)
+                if (item.itemType == InteractiveWeapon.ItemType.Used)
                 {
                     SetSlotCount(-1);
                 }
             }
         }
     }
+
+    //public void OnPointerClick(PointerEventData eventData)
+    //{
+    //    //우클릭누르면 사용
+    //    if (eventData.button == PointerEventData.InputButton.Right)
+    //    {
+    //        if (item != null)
+    //        {
+    //            //사용
+    //            Debug.Log("아이템 사용");
+    //            itemEffectDatabase.UseItem(item);
+    //            if (item.itemType == InteractiveWeapon.ItemType.Used)
+    //            {
+    //                SetSlotCount(-1);
+    //            }
+    //        }
+    //    }
+    //}
 
     public void OnBeginDrag(PointerEventData eventData)
     {
@@ -158,15 +197,28 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
     }
 
 
+    //private void ChangeSlot()
+    //{
+    //    Item _tempItem = item; // b의복사본
+    //    int _tempItemCount = itemCount; //b의복사본
+
+    //    AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount); //b자리에 a가 들어감
+        
+    //    //b가 빈슬롯이었는지 아니었는지
+    //    if(_tempItem != null )
+    //        DragSlot.instance.dragSlot.AddItem(_tempItem, _tempItemCount); //a의 자리에 b의복사본이 들어감 => 결국 a와 b가 자리가 바뀜
+    //    else
+    //        DragSlot.instance.dragSlot.ClearSlot();
+    //}
     private void ChangeSlot()
     {
-        Item _tempItem = item; // b의복사본
+        InteractiveWeapon _tempItem = item; // b의복사본
         int _tempItemCount = itemCount; //b의복사본
 
         AddItem(DragSlot.instance.dragSlot.item, DragSlot.instance.dragSlot.itemCount); //b자리에 a가 들어감
-        
+
         //b가 빈슬롯이었는지 아니었는지
-        if(_tempItem != null )
+        if (_tempItem != null)
             DragSlot.instance.dragSlot.AddItem(_tempItem, _tempItemCount); //a의 자리에 b의복사본이 들어감 => 결국 a와 b가 자리가 바뀜
         else
             DragSlot.instance.dragSlot.ClearSlot();

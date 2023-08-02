@@ -58,10 +58,10 @@ public class EnemyAnimations : MonoBehaviour
 
         }
         //rigidbody끄기
-        foreach(Rigidbody member in GetComponentsInChildren<Rigidbody>())
-        {
-            member.isKinematic = true;
-        }
+        //foreach(Rigidbody member in GetComponentsInChildren<Rigidbody>())
+        //{
+        //    member.isKinematic = true;
+        //}
     }
 
     //애니메이터에 여러 파라미터를 셋업해줌

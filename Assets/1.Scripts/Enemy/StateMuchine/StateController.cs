@@ -56,7 +56,7 @@ public class StateController : MonoBehaviour
     [HideInInspector]public NavMeshAgent nav;
     [HideInInspector]public int wayPointIndex; //way포인트
     [HideInInspector]public int maximumBurst = 7; //유효한 총알 개수
-    [HideInInspector]public float blindEngageTime = 5f; //플레이어가 시야에 사라졌을때 플레이어를 찾는 시간(초과하면 다시 정찰로 돌아감)
+    [HideInInspector]public float blindEngageTime = 0.4f; //플레이어가 시야에 사라졌을때 플레이어를 찾는 시간(초과하면 다시 정찰로 돌아감)
     [HideInInspector]public bool targetInSight; //타겟이 내 시야안에 있는지
     [HideInInspector]public bool focusSight; //시야를 포커싱 할건지
     [HideInInspector]public bool reloading; //재장전 중이냐

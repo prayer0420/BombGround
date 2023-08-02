@@ -13,6 +13,7 @@ using UnityEngine.UI;
 
 public class FindCoverAction : Action
 {
+    public float stoppingDistance = 10f; // 멈추는 거리 설정
     public FocusDecision targetNear;
     public override void OnReadyAction(StateController controller)
     {
@@ -34,6 +35,16 @@ public class FindCoverAction : Action
             controller.CoverSpot = potentialCover;
         }
         controller.nav.destination = controller.CoverSpot; //엄폐물 위치로 이동
+
+        // 플레이어와 목적지 사이의 거리 계산
+        float distanceToDestination = Vector3.Distance(controller.transform.position, controller.nav.destination);
+
+        // 플레이어가 목적지 근처에 도달했을 경우 이동을 멈추도록 처리
+        if (distanceToDestination <= stoppingDistance)
+        {
+            controller.nav.destination = controller.transform.position; // 현재 위치에 멈춤
+            return;
+        }
         controller.nav.speed = controller.generalStats.evadeSpeed;
         Debug.Log(controller.nav.destination);
         controller.variables.currentShots = controller.variables.shotsInRounds; //재장전

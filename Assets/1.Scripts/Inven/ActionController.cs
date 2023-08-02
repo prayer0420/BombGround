@@ -42,7 +42,8 @@ public class ActionController : MonoBehaviour
             if(hitInfo.transform != null)
             {
                 Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "을 획득하였습니다.");
-                inventory.Acquired(hitInfo.transform.GetComponent<ItemPickUp>().item);
+                //inventory.Acquired(hitInfo.transform.GetComponent<ItemPickUp>().item);
+                
                 Destroy(hitInfo.transform.gameObject);
                 InfoDisappear();
             }
@@ -69,7 +70,7 @@ public class ActionController : MonoBehaviour
     {
         pickupActivated = true;
         actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "획득" + "<color=yellow>" + "(E)" + "</color>";
+        //actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "획득" + "<color=yellow>" + "(E)" + "</color>";
 
     }
 

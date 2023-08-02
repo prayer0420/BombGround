@@ -23,6 +23,21 @@ public class InteractiveWeapon : MonoBehaviour
     public float recoilAngle; //반동
 
 
+    public enum WeaponName
+    {
+        ak,
+        rifle,
+        pistol
+    }
+
+    public enum ItemType
+    {
+        Equipment,
+        Consumables,
+        Used,
+        ETC,
+    }
+
 
     public enum WeaponType
     {
@@ -39,6 +54,12 @@ public class InteractiveWeapon : MonoBehaviour
 
     public WeaponType weaponType = WeaponType.NONE;
     public WeaponMode weaponMode = WeaponMode.SEMI;
+    public ItemType itemType = ItemType.Equipment;
+    public string itemName;
+    public Sprite itemImage; //아이템의 이미지
+    public GameObject itemPrefab; //아이템의 프리팹
+    public WeaponName weaponName = WeaponName.ak;
+
     public int burstSize = 1;
 
     //탄창정보
@@ -57,8 +78,10 @@ public class InteractiveWeapon : MonoBehaviour
     private Transform pickHUD;
     public Text pickupHUD_Label;
     public Sprite weaponImage;
-
+    public int slotNumber;
     public Transform muzzleTransform; //총구
+
+    public Inventory inventory;
 
     private void Awake()
     {
@@ -150,79 +173,83 @@ public class InteractiveWeapon : MonoBehaviour
             //아이템 주을때 나는 소리
             SoundManager.Instance.PlayOneShotEffect((int)pickSound, transform.position, 0.5f);
         }
-        weaponHUD.Toggle(active);
-        UpdateHUD();
-    }
-
-    #region Inventory
-    [SerializeField]
-    private float range; //습득 가능한 최대 거리.
-    private bool pickupActivated = false; //습득 가능시 true.
-
-    private RaycastHit hitInfo; //충돌체 정보 저장
-
-    //아이템 레이어에만 반응하도록 레이어 마스크를 설정.
-    [SerializeField]
-    private LayerMask layerMask;
-
-    //필요한 컴포넌트
-    [SerializeField]
-    private Text actionText;
-    public Inventory inventory;
-    private void TryAction()
-    {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (this.itemType != InteractiveWeapon.ItemType.Used)
         {
-            CheckItem();
-            CanPickUp();
+            weaponHUD.Toggle(active);
+            UpdateHUD();
         }
-    }
-
-    private void CanPickUp()
-    {
-        if (pickupActivated)
-        {
-            if (hitInfo.transform != null)
-            {
-                Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "을 획득하였습니다.");
-                inventory.Acquired(hitInfo.transform.GetComponent<ItemPickUp>().item);
-                Destroy(hitInfo.transform.gameObject);
-                InfoDisappear();
-            }
-        }
-    }
-
-    private void CheckItem()
-    {
-        if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hitInfo, range, layerMask))
-        {
-            if (hitInfo.transform.tag == "Item")
-            {
-                ItemInfoAppear();
-            }
-        }
-        else
-        {
-            InfoDisappear();
-        }
-    }
-
-
-    private void ItemInfoAppear()
-    {
-        pickupActivated = true;
-        actionText.gameObject.SetActive(true);
-        actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "획득" + "<color=yellow>" + "(E)" + "</color>";
 
     }
 
-    private void InfoDisappear()
-    {
-        pickupActivated = false;
-        actionText.gameObject.SetActive(false);
+    //#region Inventory
+    //[SerializeField]
+    //private float range; //습득 가능한 최대 거리.
+    //private bool pickupActivated = false; //습득 가능시 true.
 
-    }
-    #endregion
+    //private RaycastHit hitInfo; //충돌체 정보 저장
+
+    ////아이템 레이어에만 반응하도록 레이어 마스크를 설정.
+    //[SerializeField]
+    //private LayerMask layerMask;
+
+    ////필요한 컴포넌트
+    //[SerializeField]
+    //private Text actionText;
+    //public Inventory inventory;
+    //private void TryAction()
+    //{
+    //    if (Input.GetKeyDown(KeyCode.E))
+    //    {
+    //        CheckItem();
+    //        CanPickUp();
+    //    }
+    //}
+
+    //private void CanPickUp()
+    //{
+    //    if (pickupActivated)
+    //    {
+    //        if (hitInfo.transform != null)
+    //        {
+    //            Debug.Log(hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "을 획득하였습니다.");
+    //            inventory.Acquired(hitInfo.transform.GetComponent<ItemPickUp>().item);
+    //            Destroy(hitInfo.transform.gameObject);
+    //            InfoDisappear();
+    //        }
+    //    }
+    //}
+
+    //private void CheckItem()
+    //{
+    //    if (Physics.Raycast(transform.position, transform.TransformDirection(Vector3.forward), out hitInfo, range, layerMask))
+    //    {
+    //        if (hitInfo.transform.tag == "Item")
+    //        {
+    //            ItemInfoAppear();
+    //        }
+    //    }
+    //    else
+    //    {
+    //        InfoDisappear();
+    //    }
+    //}
+
+
+    //private void ItemInfoAppear()
+    //{
+    //    pickupActivated = true;
+    //    actionText.gameObject.SetActive(true);
+    //    actionText.text = hitInfo.transform.GetComponent<ItemPickUp>().item.itemName + "획득" + "<color=yellow>" + "(E)" + "</color>";
+
+    //}
+
+    //private void InfoDisappear()
+    //{
+    //    pickupActivated = false;
+    //    actionText.gameObject.SetActive(false);
+
+    //}
+    //#endregion
 
 
     private void Update()
@@ -232,12 +259,12 @@ public class InteractiveWeapon : MonoBehaviour
         //주을때 기능
         if (this.pickable && Input.GetButtonDown(ButtonName.Pick))
         {
-            Debug.Log("e키누름");
             //disable physics weapon
             weaponRigidbody.isKinematic = true;
             weaponCollider.enabled = false;
-            //inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
             playerInventory.AddWeapon(this);
+            inventory.Acquired(this);
+            Debug.Log("e키누름");
             Destroy(interactiveRadius);
             this.Toggle(true);
             this.pickable = false;

@@ -12,11 +12,12 @@ public class Item : ScriptableObject
     public ItemType itemType; //아이템의 유형.
     public WeaponType weaponType; //무기 유형
 
+
     public enum WeaponType
     {
-        NONE,
-        SHORT,
-        LONG,
+        NONE   = 0,
+        SHORT  = 1,
+        LONG   = 2,
     }
 
     public enum ItemType

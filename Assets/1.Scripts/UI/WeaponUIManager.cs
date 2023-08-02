@@ -50,7 +50,7 @@ public class WeaponUIManager : MonoBehaviour
 
     public void UpdateWeaponHUD(Sprite weaponSprite, int bulletLeft, int fullMag, int ExtraBullet)
     {
-        if(weaponSprite !=null && weaponHUD.sprite != weaponSprite)
+        if(weaponSprite !=null && weaponHUD.sprite != weaponSprite )
         {
             weaponHUD.sprite = weaponSprite;
             weaponHUD.type = Image.Type.Filled;

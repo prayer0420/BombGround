@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor.Experimental.GraphView;
 
 public class Settings : MonoBehaviour
 {
@@ -18,6 +19,8 @@ public class Settings : MonoBehaviour
 
     public MoveBehaviour moveBehaviour;
     // Start is called before the first frame update
+
+    public GameObject Minimap;
     void Start()
     {
         moveBehaviour = FindObjectOfType<MoveBehaviour>();
@@ -26,6 +29,11 @@ public class Settings : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.M))
+        {
+            Minimap.SetActive(!Minimap.activeSelf);
+        }
+
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (SettingActivated)

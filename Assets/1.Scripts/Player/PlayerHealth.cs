@@ -104,7 +104,7 @@ public class PlayerHealth : HealthBase
             hurtHUD.DrawHurtUI(origin.transform, origin.GetHashCode());
         }
 
-        if (health < 0)
+        if (health <= 0)
         {
             Kill();
             LoseUI.SetActive(true);
@@ -124,6 +124,10 @@ public class PlayerHealth : HealthBase
     public override void RecoveryHp(float hp)
     {
         health += hp;
+        if(health >= 100) 
+        {
+            health = 100;
+        }
         UpdateHealthBar();
     }
 

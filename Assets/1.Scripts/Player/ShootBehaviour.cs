@@ -38,7 +38,20 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
     public Vector3 leftArmShortAim = new Vector3(-4.0f, 0.0f, 2.0f); //짧은총, 피스톨 같은 총을 들었을때 조준시 왼팔의 위치 보정
 
 
-    private int activeWeapon = 0; //0이 아니면 활성화 되어있다
+    public int activeWeapon = 0; //0이 아니면 활성화 되어있다
+
+    
+    public Transform activWeaponObj;//현재 활성화 중인 오브젝트
+
+    public enum Weapon
+    {
+        None,
+        Rifle,
+        AK,
+        Pistol
+    }
+    public Weapon weapon = Weapon.None;
+    
 
     //애니메이터용 값
     private int weaponType;
@@ -55,31 +68,35 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
 
     private Vector3 castRelativeOrigin; //조정할떄 캐스트를 위한 목의 위치
 
-    private Dictionary<InteractiveWeapon.WeaponType, int> slotMap; //어떤 무기타입이 어떤, 몇번째 슬롯에 들어간다
+    public Dictionary<InteractiveWeapon.WeaponType, int> slotMap; //어떤 무기타입이 어떤, 몇번째 슬롯에 들어간다
 
     private Transform hips, spine, chest, rightHand, leftArm; //IK용 트랜스폼
-    private Vector3 initialRootRotation; //IK를 하려면 초기값이 필요함
-    private Vector3 initialHipsRotation;
-    private Vector3 initialSpineRotation;
-    private Vector3 initialChestRotation;
 
-
+    public InteractiveWeapon interactiveWeapon;
+    
     private float shotInterval, originalShotInterval; //총알 수명
 
     private List<GameObject> bulletHoles; //피탄 흔적들
     private int bulletHoleSlot = 0;
-    private int burstShotCount = 0;
-    private AimBehavour aimBehavour;
-    private Texture2D originalCrossHair;
     private bool isShooting = false;
     private bool isChangingWeapon = false;
     private bool isShotAlive = false;
+    public Inventory inventory;
+    public Item item;
+    private Vector3 initialRootRotation; //IK를 하려면 초기값이 필요함
+    private int burstShotCount = 0;
+    private AimBehavour aimBehavour;
+    private Texture2D originalCrossHair;
+    private Vector3 initialHipsRotation;
+    private Vector3 initialSpineRotation;
+    private Vector3 initialChestRotation;
 
-
-
+    public Transform newItem;
 
     private void Start()
     {
+        //item = GetComponent<Item>();
+        inventory = GetComponent<Inventory>();
         weaponType = Animator.StringToHash(AnimatorKey.Weapon);
         aimBool = Animator.StringToHash(AnimatorKey.Aim);
         blockedAimBool = Animator.StringToHash(AnimatorKey.BlockedAim);
@@ -93,6 +110,7 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
         muzzleFlash.SetActive(false);
         shot.SetActive(false);
         sparks.SetActive(false);
+
 
         slotMap = new Dictionary<InteractiveWeapon.WeaponType, int>
         {
@@ -357,6 +375,7 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
          //무기를 교체중이냐
         else
         {
+            //무기교체(Tab버튼)
             if((Mathf.Abs(Input.GetAxisRaw(ButtonName.Change)) > Mathf.Epsilon && !isChangingWeapon))
             {
                 isChangingWeapon = true;
@@ -384,54 +403,59 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
     /// <param name="weapon"></param>
     /// 
 
-    public Inventory inventory;
-
-
     public void AddWeapon(InteractiveWeapon newWeapon)
     {
-        newWeapon.gameObject.transform.SetParent(rightHand);
-        newWeapon.transform.localPosition = newWeapon.rightHandPosition;
-        newWeapon.transform.localRotation = Quaternion.Euler(newWeapon.relativeRotation);
-      
-        
-        //똑같은 타입의 무기를 줏었다면
-        if (weapons[slotMap[newWeapon.weaponType]])
+        if(newWeapon.itemType == InteractiveWeapon.ItemType.Equipment)
         {
-            //이름까지 똑같은 무기라면
-            if (weapons[slotMap[newWeapon.weaponType]].label_weaponName == newWeapon.label_weaponName)
+            newWeapon.gameObject.transform.SetParent(rightHand);
+            newWeapon.transform.localPosition = newWeapon.rightHandPosition;
+            newWeapon.transform.localRotation = Quaternion.Euler(newWeapon.relativeRotation);
+            //똑같은 타입의 무기를 줏었다면
+            if (weapons[slotMap[newWeapon.weaponType]])
             {
-                //총알을 채워줌
-                weapons[slotMap[newWeapon.weaponType]].ResetBullet();
-                ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType]);
-                //새로운 무기는 버림
-                Destroy(newWeapon.gameObject);
-                return;
+                //이름까지 똑같은 무기라면
+                if (weapons[slotMap[newWeapon.weaponType]].label_weaponName == newWeapon.label_weaponName)
+                {
+                    //총알을 채워줌
+                    weapons[slotMap[newWeapon.weaponType]].ResetBullet();
+                    ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType]);
+                    //새로운 무기는 버림
+                    Destroy(newWeapon.gameObject);
+                    return;
+                }
+                //똑같은 무기가 아니라면
+                else
+                {
+                    //inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
+                    weapons[slotMap[newWeapon.weaponType]] = newWeapon;
+                    weapons[slotMap[newWeapon.weaponType]].gameObject.SetActive(false);
+                    //퀵슬롯에 넣기
+                    //갖고있던 무기를 떨궈
+                    //weapons[slotMap[newWeapon.weaponType]].Drop();
+                }
             }
-            //똑같은 무기가 아니라면
+
+            //다른 타입의 무기를 줏었다면
+            //무기바꿔주기
             else
             {
-                //inventory.Acquired(this.transform.GetComponent<ItemPickUp>().item);
                 weapons[slotMap[newWeapon.weaponType]] = newWeapon;
-                //퀵슬롯에 넣기
-                
+                ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType]);
             }
-            //갖고있던 무기를 떨궈
-            //weapons[slotMap[newWeapon.weaponType]].Drop();
         }
-        //다른 타입의 무기를 줏었다면
-        weapons[slotMap[newWeapon.weaponType]] = newWeapon;
-        //퀵슬롯에 넣기
-        ChangeWeapon(activeWeapon, slotMap[newWeapon.weaponType]);
+        else if(newWeapon.itemType == InteractiveWeapon.ItemType.Used)
+        {
+            newWeapon.gameObject.transform.SetParent(newItem);
+            newWeapon.transform.localPosition = newItem.position;
+        }
     }
-
 
     //기존무기와 새로운 무기
     //획득한 무기를 또 획득하면 무기를 버리고 재장전시켜주고 새로운 무기를 획득했다면 빈 슬롯에 장착
     public void ChangeWeapon(int oldWeapon, int newWeapon)
     {
-        
 
-
+        //활성화된 무기가 있다면
         if (oldWeapon > 0)
         {
             weapons[oldWeapon].gameObject.SetActive(false);
@@ -442,11 +466,12 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
         //기존에 갖고있지 않다면
         while (weapons[newWeapon] == null && newWeapon > 0)
         {
+            Debug.Log(weapons.Count);
             //빈슬롯을 찾는다
-            Debug.Log(weapons);
             newWeapon = (newWeapon + 1) % weapons.Count;
         }
-        //무기를 줏었으면
+
+        //무기가있다면(무기를 줏었다면)
         if (newWeapon > 0)
         {
             weapons[newWeapon].gameObject.SetActive(true);
@@ -455,7 +480,6 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
         }
 
         activeWeapon = newWeapon;
-
         if (oldWeapon != newWeapon)
         {
             //총기교환
@@ -466,40 +490,6 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
         SetWeaponCrossHair(newWeapon > 0);
 
     }
-
-    public void ChangeWeapon(string weaponType, string weaponName)
-    {
-        //기존에 팔에 붙어있는거를 fasle
-        //클릭한것에 해당하는 아이템을 true로해야함
-        //손잡는것도 바뀌어야함
-        //밑에 이미지도 바껴야함
-        //애니메이션도 바껴야함
-    }
-
-    //Slot slot;
-    //public void OnPointerClick(PointerEventData eventData)
-    //{
-    //    if (eventData.button == PointerEventData.InputButton.Right)
-    //    {
-    //        if (slot.item!= null)
-    //        {
-    //            if (slot.item.itemType == Item.ItemType.Equipment)
-    //            {
-    //                Debug.Log("asd");
-    //                //장착
-    //                ChangeWeapon(activeWeapon, weapons.Count-1);
-                    
-    //            }
-    //            else
-    //            {
-    //                //소모
-    //                Debug.Log(slot.item.itemName + "을 사용했습니다");
-    //                slot.SetSlotCount(-1);
-    //            }
-    //        }
-    //    }
-    //}
-
 
     private bool CheckforBlockedAim()
     {
