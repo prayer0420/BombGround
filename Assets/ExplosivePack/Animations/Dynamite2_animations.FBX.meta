@@ -1,0 +1,333 @@
+fileFormatVersion: 2
+guid: f06950c44aeafbe4a82dbce0d9759d43
+timeCreated: 1483105707
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Charge01
+    100002: Dynamite2
+    100004: //RootNode
+    100006: Dynamite2_Bone
+    100008: Line010
+    100010: Line011
+    100012: Line012
+    100014: Line014
+    100016: Line015
+    100018: ribbons
+    100020: Wick01
+    100022: Wick02
+    100024: Wick02 1
+    100026: Wick03
+    100028: Wick04
+    100030: Wick05
+    100032: Wick06
+    100034: Wick07
+    400000: Charge01
+    400002: Dynamite2
+    400004: //RootNode
+    400006: Dynamite2_Bone
+    400008: Line010
+    400010: Line011
+    400012: Line012
+    400014: Line014
+    400016: Line015
+    400018: ribbons
+    400020: Wick01
+    400022: Wick02
+    400024: Wick02 1
+    400026: Wick03
+    400028: Wick04
+    400030: Wick05
+    400032: Wick06
+    400034: Wick07
+    4300000: Charge01
+    4300002: Wick06
+    4300004: Line014
+    4300006: Wick05
+    4300008: Wick07
+    4300010: Line010
+    4300012: Wick02
+    4300014: Wick01
+    4300016: Line015
+    4300018: Line011
+    4300020: Line012
+    4300022: Wick02
+    4300024: Wick03
+    4300026: Wick04
+    4300028: ribbons
+    7400000: Dynamite2_turn
+    7400002: Dynamite2_timer
+    7400004: Dynamite2_detonate
+    9500000: //RootNode
+    13700000: Charge01
+    13700002: Line010
+    13700004: Line011
+    13700006: Line012
+    13700008: Line014
+    13700010: Line015
+    13700012: ribbons
+    13700014: Wick01
+    13700016: Wick02
+    13700018: Wick02 1
+    13700020: Wick03
+    13700022: Wick04
+    13700024: Wick05
+    13700026: Wick06
+    13700028: Wick07
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations:
+    - serializedVersion: 16
+      name: Dynamite2_turn
+      takeName: Take 001
+      firstFrame: 5
+      lastFrame: 65
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dynamite2
+        weight: 1
+      - path: Dynamite2/Charge01
+        weight: 1
+      - path: Dynamite2/Line010
+        weight: 1
+      - path: Dynamite2/Line011
+        weight: 1
+      - path: Dynamite2/Line012
+        weight: 1
+      - path: Dynamite2/Line014
+        weight: 1
+      - path: Dynamite2/Line015
+        weight: 1
+      - path: Dynamite2/ribbons
+        weight: 1
+      - path: Dynamite2/Wick01
+        weight: 1
+      - path: Dynamite2/Wick02
+        weight: 1
+      - path: Dynamite2/Wick02 1
+        weight: 1
+      - path: Dynamite2/Wick03
+        weight: 1
+      - path: Dynamite2/Wick04
+        weight: 1
+      - path: Dynamite2/Wick05
+        weight: 1
+      - path: Dynamite2/Wick06
+        weight: 1
+      - path: Dynamite2/Wick07
+        weight: 1
+      - path: Dynamite2_Bone
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Dynamite2_timer
+      takeName: Take 001
+      firstFrame: 70
+      lastFrame: 110
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dynamite2
+        weight: 1
+      - path: Dynamite2/Charge01
+        weight: 1
+      - path: Dynamite2/Line010
+        weight: 1
+      - path: Dynamite2/Line011
+        weight: 1
+      - path: Dynamite2/Line012
+        weight: 1
+      - path: Dynamite2/Line014
+        weight: 1
+      - path: Dynamite2/Line015
+        weight: 1
+      - path: Dynamite2/ribbons
+        weight: 1
+      - path: Dynamite2/Wick01
+        weight: 1
+      - path: Dynamite2/Wick02
+        weight: 1
+      - path: Dynamite2/Wick02 1
+        weight: 1
+      - path: Dynamite2/Wick03
+        weight: 1
+      - path: Dynamite2/Wick04
+        weight: 1
+      - path: Dynamite2/Wick05
+        weight: 1
+      - path: Dynamite2/Wick06
+        weight: 1
+      - path: Dynamite2/Wick07
+        weight: 1
+      - path: Dynamite2_Bone
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    - serializedVersion: 16
+      name: Dynamite2_detonate
+      takeName: Take 001
+      firstFrame: 115
+      lastFrame: 125
+      wrapMode: 0
+      orientationOffsetY: 0
+      level: 0
+      cycleOffset: 0
+      loop: 0
+      hasAdditiveReferencePose: 0
+      loopTime: 0
+      loopBlend: 0
+      loopBlendOrientation: 0
+      loopBlendPositionY: 0
+      loopBlendPositionXZ: 0
+      keepOriginalOrientation: 0
+      keepOriginalPositionY: 1
+      keepOriginalPositionXZ: 0
+      heightFromFeet: 0
+      mirror: 0
+      bodyMask: 01000000010000000100000001000000010000000100000001000000010000000100000001000000010000000100000001000000
+      curves: []
+      events: []
+      transformMask:
+      - path: 
+        weight: 1
+      - path: Dynamite2
+        weight: 1
+      - path: Dynamite2/Charge01
+        weight: 1
+      - path: Dynamite2/Line010
+        weight: 1
+      - path: Dynamite2/Line011
+        weight: 1
+      - path: Dynamite2/Line012
+        weight: 1
+      - path: Dynamite2/Line014
+        weight: 1
+      - path: Dynamite2/Line015
+        weight: 1
+      - path: Dynamite2/ribbons
+        weight: 1
+      - path: Dynamite2/Wick01
+        weight: 1
+      - path: Dynamite2/Wick02
+        weight: 1
+      - path: Dynamite2/Wick02 1
+        weight: 1
+      - path: Dynamite2/Wick03
+        weight: 1
+      - path: Dynamite2/Wick04
+        weight: 1
+      - path: Dynamite2/Wick05
+        weight: 1
+      - path: Dynamite2/Wick06
+        weight: 1
+      - path: Dynamite2/Wick07
+        weight: 1
+      - path: Dynamite2_Bone
+        weight: 1
+      maskType: 0
+      maskSource: {instanceID: 0}
+      additiveReferencePoseFrame: 1
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

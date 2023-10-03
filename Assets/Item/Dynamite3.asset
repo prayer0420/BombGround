@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 190b116de75c9ad4da3a01b71b967e1b, type: 3}
+  m_Name: Dynamite3
+  m_EditorClassIdentifier: 
+  itemName: Dynamite3
+  itemImage: {fileID: 21300000, guid: 726c9fde8e291de448ed928c48c1f620, type: 3}
+  itemPrefab: {fileID: 3947268780542829841, guid: 67350efee339b044aa63a2f3a9e23735,
+    type: 3}
+  itemType: 0
+  weaponType: 0

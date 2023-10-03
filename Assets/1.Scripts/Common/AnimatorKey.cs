@@ -19,6 +19,8 @@ namespace FC
         public const string Shooting = "Shooting";
         public const string Reload = "Reload";
         public const string Crouch = "Crouch";
+        public const string Die = "Die";
+        public const string Bomb = "Bomb";
 
         public const string AngularSpeed = "AngularSpeed";
         public const string Horizontal = "H";
@@ -26,4 +28,5 @@ namespace FC
 
     }
 }
+
 

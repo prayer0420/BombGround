@@ -85,6 +85,7 @@ public class PlayerHealth : HealthBase
         myAnimator.SetBool(AnimatorKey.Aim, false);
         myAnimator.SetBool(AnimatorKey.Cover, false);
         myAnimator.SetFloat(AnimatorKey.Speed, 0);
+        myAnimator.SetBool(AnimatorKey.Die, true);
 
         foreach(GeneriBehaviour behaviour in GetComponentsInChildren<GeneriBehaviour>())
         {

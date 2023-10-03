@@ -1,0 +1,146 @@
+fileFormatVersion: 2
+guid: e4c179c3e90cc244e831d22b5a534a87
+timeCreated: 1483913293
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: BlueWire
+    100002: Charge01
+    100004: Charge02
+    100006: Charge03
+    100008: Charge04
+    100010: Charge05
+    100012: Clock
+    100014: //RootNode
+    100016: Dynamite3
+    100018: Dynamite3_Bone
+    100020: HourHand
+    100022: MinuteHand
+    100024: RedWire
+    100026: Ribbons
+    100028: Terminal
+    100030: Wire01
+    100032: Wire02
+    100034: Wire03
+    100036: Wire04
+    100038: Wire05
+    400000: BlueWire
+    400002: Charge01
+    400004: Charge02
+    400006: Charge03
+    400008: Charge04
+    400010: Charge05
+    400012: Clock
+    400014: //RootNode
+    400016: Dynamite3
+    400018: Dynamite3_Bone
+    400020: HourHand
+    400022: MinuteHand
+    400024: RedWire
+    400026: Ribbons
+    400028: Terminal
+    400030: Wire01
+    400032: Wire02
+    400034: Wire03
+    400036: Wire04
+    400038: Wire05
+    4300000: Clock
+    4300002: Charge02
+    4300004: Charge03
+    4300006: Charge04
+    4300008: Ribbons
+    4300010: RedWire
+    4300012: Charge05
+    4300014: Charge01
+    4300016: Wire05
+    4300018: Wire01
+    4300020: Wire02
+    4300022: Wire03
+    4300024: Wire04
+    4300026: BlueWire
+    4300028: HourHand
+    4300030: Terminal
+    4300032: MinuteHand
+    9500000: //RootNode
+    13700000: BlueWire
+    13700002: Charge01
+    13700004: Charge02
+    13700006: Charge03
+    13700008: Charge04
+    13700010: Charge05
+    13700012: Clock
+    13700014: HourHand
+    13700016: MinuteHand
+    13700018: RedWire
+    13700020: Ribbons
+    13700022: Terminal
+    13700024: Wire01
+    13700026: Wire02
+    13700028: Wire03
+    13700030: Wire04
+    13700032: Wire05
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

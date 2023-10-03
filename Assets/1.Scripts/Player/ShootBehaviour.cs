@@ -93,8 +93,11 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
 
     public Transform newItem;
 
+    public Animator animator;
+
     private void Start()
     {
+        animator = GetComponent<Animator>();
         //item = GetComponent<Item>();
         inventory = GetComponent<Inventory>();
         weaponType = Animator.StringToHash(AnimatorKey.Weapon);
@@ -395,6 +398,21 @@ public class ShootBehaviour : GeneriBehaviour/*, IPointerClickHandler*/
         }
         isAiming = behaviourController.GetAnimator.GetBool(aimBool);
 
+
+        if (Bomb.bombing)
+        {
+            MoveBehaviour.CanMove = false;
+            animator.SetBool(AnimatorKey.Bomb, true);
+            animator.applyRootMotion = false;
+
+        }
+        else if (!Bomb.bombing)
+        {
+            animator.SetBool(AnimatorKey.Bomb, false);
+            animator.applyRootMotion = true;
+            MoveBehaviour.CanMove = true;
+
+        }
     }
 
     /// <summary>

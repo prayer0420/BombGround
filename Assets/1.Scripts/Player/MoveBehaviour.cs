@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using NPOI.Util;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -25,6 +26,7 @@ public class MoveBehaviour : GeneriBehaviour
 
     private CapsuleCollider capsuleCollider;
     private Transform myTransform;
+    private Transform charactrer;
 
     private void Start()
     {
@@ -40,6 +42,9 @@ public class MoveBehaviour : GeneriBehaviour
         behaviourController.RegisterDefaultBehaviour(this.behaviourCode);
 
         speedSeeker = runSpeed;
+        //this.gameObject.transform.localPosition = new Vector3(0, 1, 0);
+         
+       
     }
 
     //이동의 기본은 회전!
