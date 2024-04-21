@@ -25,6 +25,10 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
 
     private ItemEffectDatabase itemEffectDatabase;
 
+    [SerializeField]
+    private Transform PlayerHands;
+
+    private Bomb bomb;
 
     void Start()
     {
@@ -32,6 +36,8 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
         shootBehaviour = FindObjectOfType<ShootBehaviour>();
         baseRect =  transform.parent.parent.GetComponent<RectTransform>().rect; //인벤토리 창의 rectTransform정보를 받아옴
         inputNumber = FindObjectOfType<InputNumber>();
+        //bomb = GetComponent<Bomb>();
+        bomb = FindObjectOfType<Bomb>();
 
     }
 
@@ -116,10 +122,23 @@ public class Slot : MonoBehaviour, IPointerClickHandler, IBeginDragHandler, IDra
                 //사용
                 Debug.Log("아이템 사용");
                 itemEffectDatabase.UseItem(item);
+                //폭탄일 경우 플레이어의 손으로 옮기기
+                if (item.itemName == "Dynamite3")
+                {
+                    Debug.Log("폭탄 장착");
+                    item.transform.parent = PlayerHands;
+                    item.transform.localPosition = Vector3.zero;
+                    // Rigidbody 설정
+                    Rigidbody bombRigidbody = item.GetComponent<Rigidbody>();
+                    bombRigidbody.useGravity = false; // 중력 비활성화
+                    bombRigidbody.isKinematic = true; // 외부 힘에 의해 안움직임
+                    bomb.itemEquipped = true;
+                }
                 if (item.itemType == InteractiveWeapon.ItemType.Used)
                 {
                     SetSlotCount(-1);
                 }
+                
             }
         }
     }

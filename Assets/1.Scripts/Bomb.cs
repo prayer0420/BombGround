@@ -20,6 +20,8 @@ public class Bomb : MonoBehaviour
 
     public static bool bombing;
     public static bool bombend;
+    public bool itemEquipped; //장착했는지 안했는지 확인
+
     private void Start()
     {
         //// 폭탄의 Rigidbody 컴포넌트를 가져옴
@@ -29,48 +31,53 @@ public class Bomb : MonoBehaviour
         //// Rigidbody의 isKinematic 속성을 true로 설정하여 외부 힘에 의해 영향을 받지 않게 함
         //bombRigidbody.isKinematic = true;
         animator = GetComponent<Animator>();
-
     }
 
     private void Update()
     {
-        // 마우스 왼쪽 버튼을 길게 누르는지 확인
-        if (Input.GetMouseButton(0))
+        if (itemEquipped)
         {
-            if (!isPressing)
+
+
+            // 마우스 왼쪽 버튼을 길게 누르는지 확인
+            if (Input.GetMouseButton(0))
             {
-                isPressing = true;
-                currentLoadingTime = 0f;
-                loadingBar.gameObject.SetActive(true);
+                if (!isPressing)
+                {
+                    isPressing = true;
+                    currentLoadingTime = 0f;
+                    loadingBar.gameObject.SetActive(true);
+                }
+
+                //애니메이션 활성화
+                bombing = true;
+
+                // 로딩 바 업데이트
+                currentLoadingTime += Time.deltaTime;
+                float progress = currentLoadingTime / loadingTime;
+                loadingBar.value = Mathf.Clamp01(progress);
+
+                // 로딩이 100%에 도달하면 폭탄 설치
+                if (progress >= 1f)
+                {
+                    PlaceBomb();
+                    loadingBar.value = 0f;
+                    loadingBar.gameObject.SetActive(false);
+                    isPressing = false;
+                    bombing = false;
+
+                    //gameObject.SetActive(false);
+                }
             }
-
-            //애니메이션 활성화
-            bombing = true;
-
-            // 로딩 바 업데이트
-            currentLoadingTime += Time.deltaTime;
-            float progress = currentLoadingTime / loadingTime;
-            loadingBar.value = Mathf.Clamp01(progress);
-
-            // 로딩이 100%에 도달하면 폭탄 설치
-            if (progress >= 1f)
+            else
             {
-                PlaceBomb();
+                // 버튼을 뗄 때 로딩 초기화
                 loadingBar.value = 0f;
                 loadingBar.gameObject.SetActive(false);
                 isPressing = false;
                 bombing = false;
-                //gameObject.SetActive(false);
-            }
-        }
-        else
-        {
-            // 버튼을 뗄 때 로딩 초기화
-            loadingBar.value = 0f;
-            loadingBar.gameObject.SetActive(false);
-            isPressing = false;
-            bombing = false;
 
+            }
         }
     }
 
@@ -83,10 +90,15 @@ public class Bomb : MonoBehaviour
         GameObject bomb = Instantiate(bombPrefab, bombPosition, bombRotation);
         // 부착 지점의 자식으로 설정
         bomb.transform.parent = bombAttachmentPoint;
+        bomb.SetActive(true);
 
         // Rigidbody 설정
-        //Rigidbody bombRigidbody = bomb.GetComponent<Rigidbody>();
-        //bombRigidbody.useGravity = false; // 중력 활성화
-        //bombRigidbody.isKinematic = true; // 외부 힘에 의해 움직임
+        Rigidbody bombRigidbody = bomb.GetComponent<Rigidbody>();
+        bombRigidbody.useGravity = false; // 중력 비활성화
+        bombRigidbody.isKinematic = true; // 외부 힘에 의해 안움직임
+        Destroy(gameObject);
+
+
+
     }
 }
